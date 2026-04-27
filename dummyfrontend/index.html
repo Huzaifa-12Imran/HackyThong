@@ -229,26 +229,26 @@
                 
                 res.data.actions.forEach((a, idx) => {
                     // Generate a fake action ID if none provided
-                    const actionId = a.id || \`action-\${Date.now()}-\${idx}\`;
+                    const actionId = a.id || `action-${Date.now()}-${idx}`;
                     const card = document.createElement('div');
                     card.className = 'action-card';
-                    card.id = \`card-\${actionId}\`;
-                    card.innerHTML = \`
+                    card.id = `card-${actionId}`;
+                    card.innerHTML = `
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">\${a.type}</span>
-                            <span style="font-size: 0.7rem; background: var(--border); padding: 2px 8px; border-radius: 4px;">Effort: \${a.effort || 'N/A'}</span>
+                            <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">${a.type}</span>
+                            <span style="font-size: 0.7rem; background: var(--border); padding: 2px 8px; border-radius: 4px;">Effort: ${a.effort || 'N/A'}</span>
                         </div>
-                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">\${a.title}</div>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">\${a.details}</p>
+                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">${a.title}</div>
+                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">${a.details}</p>
                         <div style="background: rgba(99, 102, 241, 0.1); padding: 0.5rem; border-radius: 0.5rem; font-weight: 600; color: var(--primary); font-size: 0.8rem;">
-                            Impact: \${a.impact || 'N/A'}
+                            Impact: ${a.impact || 'N/A'}
                         </div>
-                        <div class="code-snippet">\${a.code_fix || 'No code fix provided.'}</div>
+                        <div class="code-snippet">${a.code_fix || 'No code fix provided.'}</div>
                         <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                            <button onclick="handleAction('\${actionId}', '\${a.type}', 'completed')" style="padding: 0.5rem; font-size: 0.75rem; background: var(--accent);">Mark Done</button>
-                            <button onclick="handleAction('\${actionId}', '\${a.type}', 'ignored')" style="padding: 0.5rem; font-size: 0.75rem; background: transparent; border: 1px solid var(--border); color: var(--text-dim);">Ignore</button>
+                            <button onclick="handleAction('${actionId}', '${a.type}', 'completed')" style="padding: 0.5rem; font-size: 0.75rem; background: var(--accent);">Mark Done</button>
+                            <button onclick="handleAction('${actionId}', '${a.type}', 'ignored')" style="padding: 0.5rem; font-size: 0.75rem; background: transparent; border: 1px solid var(--border); color: var(--text-dim);">Ignore</button>
                         </div>
-                    \`;
+                    `;
                     container.appendChild(card);
                 });
             }
