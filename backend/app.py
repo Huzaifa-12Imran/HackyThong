@@ -32,6 +32,14 @@ def health():
     return jsonify({"success": True, "data": {"status": "ok"}, "message": ""})
 
 
+@app.route('/cache/clear', methods=['GET', 'POST'])
+def clear_cache():
+    """Flush the in-memory response cache (call between demo runs)."""
+    from utils.cache import response_cache
+    response_cache.clear()
+    return jsonify({"success": True, "message": "Cache cleared"})
+
+
 @app.route('/seed-demo', methods=['POST'])
 def seed_demo():
     """One-click endpoint to seed all demo data into Firestore."""

@@ -82,5 +82,6 @@ class RunwayCalculator:
         for category in ['models', 'infrastructure', 'saas_tools']:
             items = stack_profile.get(category, [])
             for item in items:
-                total += item.get('monthly_cost', 0)
+                if isinstance(item, dict):
+                    total += item.get('monthly_cost', 0)
         return total if total > 0 else 1150  # fallback demo cost

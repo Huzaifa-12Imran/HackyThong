@@ -20,9 +20,9 @@ def cost_impact():
     try:
         body = request.get_json()
         founder_id = body.get('founder_id', 'demo-founder-001')
-        change = body.get('change', '')
+        change = body.get('change_description', body.get('change', ''))
         if not change:
-            return error("Please provide a change description")
+            return error("Please provide a change_description")
 
         db = get_db()
         stack_doc = db.collection('stacks').document(founder_id).get()

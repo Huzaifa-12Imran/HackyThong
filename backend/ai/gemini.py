@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
 import json
+import time
 from ai.parser import parse_or_fallback
 from ai.scanner import fetch_latest_ai_news
 from utils.calculator import RunwayCalculator
@@ -10,8 +11,39 @@ client = OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 )
-MODEL = os.getenv("AI_MODEL", "google/gemini-2.5-flash-preview")
+MODEL = os.getenv("AI_MODEL", "google/gemini-2.5-flash")
+# Fallback models if primary hits rate limit
+FALLBACK_MODELS = [
+    "google/gemini-2.0-flash",
+    "google/gemini-2.0-flash-lite",
+    "meta-llama/llama-3.1-8b-instruct:free",
+]
 calc = RunwayCalculator()
+
+
+def _chat(prompt: str, max_tokens: int = 2048) -> str:
+    """Call the AI with automatic model fallback on 429 rate limit."""
+    models_to_try = [MODEL] + FALLBACK_MODELS
+    last_err = None
+    for model in models_to_try:
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=max_tokens
+            )
+            content = response.choices[0].message.content
+            print(f"[AI] Used model: {model}")
+            return content
+        except Exception as e:
+            err_str = str(e)
+            if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "rate" in err_str.lower():
+                print(f"[AI] {model} rate-limited, trying next model...")
+                last_err = e
+                time.sleep(1)
+                continue
+            raise  # non-rate-limit errors bubble up immediately
+    raise last_err
 
 # ── Fallback responses (never let AI errors crash the demo) ──────────────
 
@@ -125,11 +157,9 @@ def generate_brief(stack_profile: dict, behavior_profile: dict = None) -> dict:
     """
 
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        parsed = parse_or_fallback(response.choices[0].message.content, BRIEF_FALLBACK)
+        raw_content = _chat(prompt, max_tokens=2048)
+        print("RAW RESPONSE START\n", raw_content, "\nRAW RESPONSE END")
+        parsed = parse_or_fallback(raw_content, BRIEF_FALLBACK)
 
         # Python handles all the numbers — never Gemini
         if parsed != BRIEF_FALLBACK:
@@ -169,6 +199,8 @@ def generate_brief(stack_profile: dict, behavior_profile: dict = None) -> dict:
         return parsed
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Gemini brief generation failed: {e}")
         return BRIEF_FALLBACK
 
@@ -214,11 +246,7 @@ def analyze_cost_impact(stack_profile: dict, change_description: str,
     """
 
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        parsed = parse_or_fallback(response.choices[0].message.content, COST_IMPACT_FALLBACK)
+        parsed = parse_or_fallback(_chat(prompt, max_tokens=2048), COST_IMPACT_FALLBACK)
 
         if parsed != COST_IMPACT_FALLBACK:
             monthly_saving = parsed.get('monthly_saving_hint', 0)
@@ -290,11 +318,7 @@ def generate_health_analysis(stack_profile: dict) -> dict:
     """
 
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        parsed = parse_or_fallback(response.choices[0].message.content, HEALTH_FALLBACK)
+        parsed = parse_or_fallback(_chat(prompt, max_tokens=2048), HEALTH_FALLBACK)
         response_cache.set(cache_key, parsed)
         return parsed
     except Exception as e:
@@ -350,11 +374,7 @@ def get_chat_response(stack_profile: dict, question: str) -> dict:
     }
 
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        return parse_or_fallback(response.choices[0].message.content, fallback)
+        return parse_or_fallback(_chat(prompt, max_tokens=2048), fallback)
     except Exception as e:
         print(f"Gemini chat failed: {e}")
         return fallback

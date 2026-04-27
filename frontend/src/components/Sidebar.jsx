@@ -10,19 +10,34 @@ const navItems = [
 
 export default function Sidebar({ currentPage, onNavigate }) {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-60 bg-white border-r border-gray-200 flex flex-col p-3 z-50">
+    <aside className="fixed left-0 top-0 h-screen w-60 bg-bg-sidebar border-r border-border-dark flex flex-col p-3 z-50">
+      {/* Ambient top glow */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-green to-transparent opacity-60" />
+
       {/* Logo */}
-      <div className="flex items-center px-2 py-4 mb-4">
-        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center mr-3 flex-shrink-0">
-          <span className="material-symbols-outlined text-white" style={{ fontVariationSettings: "'FILL' 1", fontSize: 18 }}>
+      <div className="flex items-center px-3 py-5 mb-2">
+        <div className="w-9 h-9 rounded-xl bg-gradient-green-cyan flex items-center justify-center mr-3 flex-shrink-0 shadow-glow-green">
+          <span
+            className="material-symbols-outlined text-white"
+            style={{ fontVariationSettings: "'FILL' 1", fontSize: 20 }}
+          >
             terminal
           </span>
         </div>
         <div>
-          <h1 className="text-base font-bold text-gray-900 tracking-tighter leading-none">StackPulse</h1>
-          <p className="text-[10px] uppercase tracking-widest text-primary font-bold mt-0.5">Production Ready</p>
+          <h1 className="text-[15px] font-black text-text-primary tracking-tight leading-none">
+            StackPulse
+          </h1>
+          <p className="text-[9px] uppercase tracking-[0.18em] text-accent-green font-bold mt-0.5">
+            AI Intelligence Layer
+          </p>
         </div>
       </div>
+
+      {/* Section label */}
+      <p className="text-[10px] font-bold text-text-muted uppercase tracking-[0.15em] px-3 mb-2">
+        Navigation
+      </p>
 
       {/* Nav */}
       <nav className="space-y-0.5 flex-1">
@@ -32,30 +47,51 @@ export default function Sidebar({ currentPage, onNavigate }) {
             <button
               key={item.page}
               onClick={() => onNavigate(item.page)}
-              className={`w-full flex items-center px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-150 ${
+              className={`w-full flex items-center px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 group ${
                 active
-                  ? "bg-gray-100 text-gray-900"
-                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                  ? "nav-active text-text-primary"
+                  : "text-text-muted hover:text-text-primary hover:bg-bg-card"
               }`}
             >
-              <span className="material-symbols-outlined mr-3 text-[20px]">{item.icon}</span>
+              <span
+                className={`material-symbols-outlined mr-3 text-[18px] transition-colors ${
+                  active ? "text-accent-green" : "group-hover:text-text-secondary"
+                }`}
+                style={active ? { fontVariationSettings: "'FILL' 1" } : {}}
+              >
+                {item.icon}
+              </span>
               {item.label}
+              {active && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-accent-green" />
+              )}
             </button>
           );
         })}
       </nav>
 
-      {/* System Health */}
-      <div className="mt-auto pt-3 border-t border-gray-100">
-        <div className="bg-gray-50 border border-gray-100 rounded-lg p-3">
-          <div className="text-[11px] font-bold text-gray-400 uppercase tracking-tighter mb-1">System Health</div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-emerald-600">Stable</span>
-            <span className="text-[10px] text-gray-400">99.9% Up</span>
+      {/* System status */}
+      <div className="mt-auto pt-3 border-t border-border-dark">
+        <div className="bg-bg-card border border-border-dark rounded-xl p-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
+              System
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse" />
+              <span className="text-[10px] text-accent-green font-semibold">Live</span>
+            </span>
           </div>
-          <div className="w-full bg-gray-200 h-1 mt-2 rounded-full overflow-hidden">
-            <div className="bg-emerald-500 h-full" style={{ width: "99%" }} />
+          <div className="w-full bg-border-dark h-1 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: "99%",
+                background: "linear-gradient(90deg, #10b981, #06b6d4)",
+              }}
+            />
           </div>
+          <p className="text-[10px] text-text-muted mt-1.5">99.9% uptime · AI feeds active</p>
         </div>
       </div>
     </aside>

@@ -1,33 +1,51 @@
 import React from "react";
 
 export default function TopBar({ title }) {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const dateStr = now.toLocaleDateString([], {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 flex items-center justify-between px-6 h-12">
-      <div className="flex items-center space-x-4">
-        <div className="relative">
-          <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" style={{ fontSize: 16 }}>
-            search
-          </span>
-          <input
-            className="pl-8 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs w-64 focus:outline-none focus:ring-1 focus:ring-primary"
-            placeholder="Search resources..."
-            type="text"
-          />
-        </div>
+    <header className="sticky top-0 z-40 bg-bg-secondary border-b border-border-dark flex items-center justify-between px-8 h-14">
+      {/* Left: page title */}
+      <div className="flex items-center gap-3">
+        <div className="w-px h-5 bg-gradient-to-b from-accent-green to-transparent rounded-full" />
+        <h2 className="text-sm font-bold text-text-primary">{title}</h2>
       </div>
-      <div className="flex items-center space-x-3">
-        <button className="text-gray-500 hover:bg-gray-50 p-1.5 rounded transition-colors">
-          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>notifications</span>
-        </button>
-        <button className="text-gray-500 hover:bg-gray-50 p-1.5 rounded transition-colors">
-          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>help_outline</span>
-        </button>
-        <div className="h-6 w-px bg-gray-200 mx-1" />
-        <div className="flex items-center space-x-2 cursor-pointer">
-          <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
-            S
-          </div>
-          <span className="text-sm font-medium text-gray-900">DevSaaS</span>
+
+      {/* Right: meta info */}
+      <div className="flex items-center gap-5">
+        {/* Demo badge */}
+        <div className="flex items-center gap-1.5 bg-accent-purple bg-opacity-15 border border-accent-purple border-opacity-25 text-accent-purple-bright text-[10px] font-bold px-2.5 py-1 rounded-full">
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: 11, fontVariationSettings: "'FILL' 1" }}
+          >
+            psychology
+          </span>
+          AI ACTIVE
+        </div>
+
+        {/* Sam's context */}
+        <div className="flex items-center gap-2 text-xs text-text-muted">
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: 14, fontVariationSettings: "'FILL' 1" }}
+          >
+            account_circle
+          </span>
+          <span className="font-medium text-text-secondary">Sam</span>
+          <span className="text-border-bright">·</span>
+          <span>demo-founder-001</span>
+        </div>
+
+        {/* Time */}
+        <div className="text-xs text-text-muted font-mono">
+          {dateStr} · {timeStr}
         </div>
       </div>
     </header>

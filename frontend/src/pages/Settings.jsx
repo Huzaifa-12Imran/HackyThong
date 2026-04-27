@@ -1,77 +1,196 @@
 import React from "react";
 
+const SETTINGS_SECTIONS = [
+  {
+    title: "Demo Configuration",
+    icon: "science",
+    color: "text-accent-purple-bright",
+    items: [
+      {
+        label: "Demo Mode",
+        description: "Use cached responses for reliable demo presentation",
+        type: "toggle",
+        value: false,
+        hint: "Set DEMO_MODE = true in src/utils/api.js before presenting",
+      },
+      {
+        label: "Founder ID",
+        description: "Active founder profile for all API calls",
+        type: "text",
+        value: "demo-founder-001",
+      },
+    ],
+  },
+  {
+    title: "AI Stack",
+    icon: "smart_toy",
+    color: "text-accent-green",
+    items: [
+      {
+        label: "AI Model",
+        description: "Backend model via OpenRouter",
+        type: "badge",
+        value: "google/gemini-2.5-flash",
+      },
+      {
+        label: "Backend URL",
+        description: "Flask API endpoint",
+        type: "badge",
+        value: "http://localhost:8080",
+      },
+      {
+        label: "Demo Cache Endpoints",
+        description: "Endpoints with pre-loaded fallback data",
+        type: "list",
+        value: ["/brief/generate", "/analyze/cost-impact", "/stack/register"],
+      },
+    ],
+  },
+  {
+    title: "Data & Memory",
+    icon: "psychology",
+    color: "text-accent-cyan",
+    items: [
+      {
+        label: "Firestore Project",
+        description: "Firebase project for stack and memory storage",
+        type: "badge",
+        value: "hackythong-2026",
+      },
+      {
+        label: "Memory Actions Seeded",
+        description: "Historical actions for behavior profile",
+        type: "badge",
+        value: "8 actions",
+      },
+    ],
+  },
+];
+
 export default function Settings() {
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto animate-fadeInUp">
+      {/* Header */}
       <div className="mb-8">
-        <p className="text-[11px] font-semibold text-primary uppercase tracking-widest mb-1">CONFIGURATION</p>
-        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Settings</h2>
-        <p className="text-gray-500 mt-1 text-sm">Manage your StackPulse preferences.</p>
+        <p className="text-xs font-bold text-accent-purple-bright uppercase tracking-[0.2em] mb-2">
+          CONFIGURATION
+        </p>
+        <h2 className="text-3xl font-black text-text-primary tracking-tight">
+          Settings
+        </h2>
+        <p className="text-text-secondary mt-1.5 text-sm">
+          System configuration and demo setup reference.
+        </p>
       </div>
 
       <div className="space-y-5">
-        {/* API Config */}
-        <div className="bg-white border border-gray-200 rounded-xl p-5">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">api</span>
-            Backend Connection
-          </h3>
-          <div className="space-y-3">
-            <div>
-              <label className="text-xs font-semibold text-gray-500 block mb-1">Backend URL</label>
-              <input
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary"
-                defaultValue="http://REPLACE_WITH_BACKEND_IP:8080"
-              />
-              <p className="text-xs text-gray-400 mt-1">Your partner's backend Cloud Run URL goes here</p>
+        {SETTINGS_SECTIONS.map((section) => (
+          <div
+            key={section.title}
+            className="glass rounded-2xl border border-border-dark overflow-hidden"
+          >
+            {/* Section header */}
+            <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border-dark bg-bg-sidebar">
+              <span
+                className={`material-symbols-outlined ${section.color}`}
+                style={{ fontVariationSettings: "'FILL' 1", fontSize: 18 }}
+              >
+                {section.icon}
+              </span>
+              <h3 className="text-sm font-bold text-text-primary">
+                {section.title}
+              </h3>
+            </div>
+
+            {/* Items */}
+            <div className="divide-y divide-border-dark">
+              {section.items.map((item) => (
+                <div key={item.label} className="px-5 py-4 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-text-primary">
+                      {item.label}
+                    </p>
+                    <p className="text-xs text-text-muted mt-0.5">
+                      {item.description}
+                    </p>
+                    {item.hint && (
+                      <p className="text-xs text-accent-amber mt-1 font-mono">
+                        ⚡ {item.hint}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex-shrink-0">
+                    {item.type === "toggle" && (
+                      <div
+                        className={`w-11 h-6 rounded-full flex items-center px-1 transition-colors cursor-pointer ${
+                          item.value ? "bg-accent-green" : "bg-border-bright"
+                        }`}
+                      >
+                        <div
+                          className={`w-4 h-4 rounded-full bg-white transition-transform shadow ${
+                            item.value ? "translate-x-5" : "translate-x-0"
+                          }`}
+                        />
+                      </div>
+                    )}
+                    {item.type === "badge" && (
+                      <span className="text-xs font-mono font-bold text-accent-cyan bg-accent-cyan bg-opacity-10 border border-accent-cyan border-opacity-20 px-2.5 py-1 rounded-lg">
+                        {item.value}
+                      </span>
+                    )}
+                    {item.type === "text" && (
+                      <span className="text-xs font-mono text-text-secondary bg-border-dark px-2.5 py-1 rounded-lg">
+                        {item.value}
+                      </span>
+                    )}
+                    {item.type === "list" && (
+                      <div className="flex flex-col gap-1 items-end">
+                        {item.value.map((v) => (
+                          <span
+                            key={v}
+                            className="text-[10px] font-mono text-accent-green bg-accent-green bg-opacity-10 border border-accent-green border-opacity-15 px-2 py-0.5 rounded"
+                          >
+                            {v}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        ))}
 
-        {/* Demo Mode */}
-        <div className="bg-white border border-gray-200 rounded-xl p-5">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">science</span>
-            Demo Mode
-          </h3>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-700">Use cached demo responses</p>
-              <p className="text-xs text-gray-400 mt-0.5">When on, returns pre-loaded perfect responses. Set DEMO_MODE in src/utils/api.js</p>
-            </div>
-            <div className="w-10 h-6 bg-primary rounded-full relative cursor-pointer">
-              <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow" />
-            </div>
+        {/* Quick commands box */}
+        <div className="glass rounded-2xl border border-border-dark overflow-hidden">
+          <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border-dark bg-bg-sidebar">
+            <span
+              className="material-symbols-outlined text-accent-amber"
+              style={{ fontVariationSettings: "'FILL' 1", fontSize: 18 }}
+            >
+              terminal
+            </span>
+            <h3 className="text-sm font-bold text-text-primary">Quick Commands</h3>
           </div>
-        </div>
-
-        {/* Founder Profile */}
-        <div className="bg-white border border-gray-200 rounded-xl p-5">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">person</span>
-            Founder Profile
-          </h3>
-          <div className="space-y-3">
+          <div className="p-5 space-y-3">
             {[
-              { label: "Founder Name", value: "Sam", type: "text" },
-              { label: "Monthly Burn Rate ($)", value: "18000", type: "number" },
-              { label: "Runway (months)", value: "14", type: "number" },
-            ].map((f) => (
-              <div key={f.label}>
-                <label className="text-xs font-semibold text-gray-500 block mb-1">{f.label}</label>
-                <input
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                  defaultValue={f.value}
-                  type={f.type}
-                />
+              { label: "Start backend", cmd: "cd backend && python app.py" },
+              { label: "Seed demo data", cmd: "POST http://localhost:8080/seed-demo" },
+              { label: "Start frontend", cmd: "cd frontend && npm start" },
+              { label: "Deploy backend", cmd: "gcloud run deploy stackpulse-backend --source . --region us-central1 --allow-unauthenticated" },
+            ].map((c) => (
+              <div key={c.label}>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1">
+                  {c.label}
+                </p>
+                <pre className="text-xs font-mono text-accent-cyan bg-bg-base border border-border-dark rounded-lg px-3 py-2 overflow-x-auto">
+                  {c.cmd}
+                </pre>
               </div>
             ))}
           </div>
         </div>
-
-        <button className="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-green-800 transition-all">
-          Save Settings
-        </button>
       </div>
     </div>
   );

@@ -16,8 +16,15 @@ export default function RunwayAnalyzer() {
     setResult(null);
     setBarWidth(0);
     barTriggered.current = false;
-    const res = await apiCall("/analyze/cost-impact", { change_description: input });
-    setResult(res.data);
+    try {
+      const res = await apiCall("/analyze/cost-impact", {
+        founder_id: "demo-founder-001",
+        change_description: input,
+      });
+      setResult(res.data);
+    } catch (e) {
+      console.error(e);
+    }
     setLoading(false);
   }
 
@@ -25,57 +32,86 @@ export default function RunwayAnalyzer() {
     if (result && !barTriggered.current) {
       barTriggered.current = true;
       const target = Math.min((result.runway_extension_days / 30) * 100, 100);
-      setTimeout(() => setBarWidth(target), 50);
+      setTimeout(() => setBarWidth(target), 100);
     }
   }, [result]);
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto animate-fadeInUp">
       {/* Header */}
       <div className="text-center mb-8">
-        <p className="text-[11px] font-semibold text-primary uppercase tracking-widest mb-1">EFFICIENCY ENGINE</p>
-        <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Runway Impact Analyzer</h2>
-        <p className="text-gray-500 mt-2 text-sm">
+        <p className="text-xs font-bold text-accent-cyan uppercase tracking-[0.2em] mb-2">
+          EFFICIENCY ENGINE
+        </p>
+        <h2 className="text-3xl font-black text-text-primary tracking-tight">
+          Runway Impact Analyzer
+        </h2>
+        <p className="text-text-secondary mt-2 text-sm">
           Paste a pricing change or ecosystem news. Get the exact dollar impact on your stack.
         </p>
       </div>
 
       {/* Input Card */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mb-6">
-        <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-200">
+      <div className="glass rounded-2xl overflow-hidden mb-6 border border-border-dark">
+        {/* Terminal-style header */}
+        <div className="flex items-center justify-between px-4 py-2.5 bg-bg-sidebar border-b border-border-dark">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-gray-400" style={{ fontSize: 16 }}>code</span>
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">CHANGE_DESCRIPTION</span>
+            <span
+              className="material-symbols-outlined text-accent-cyan"
+              style={{ fontSize: 14 }}
+            >
+              code
+            </span>
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.12em]">
+              CHANGE_DESCRIPTION
+            </span>
           </div>
           <div className="flex gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-300" />
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-300" />
-            <span className="w-2.5 h-2.5 rounded-full bg-green-300" />
+            <span className="w-2.5 h-2.5 rounded-full bg-accent-red opacity-70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-accent-amber opacity-70" />
+            <span className="w-2.5 h-2.5 rounded-full bg-accent-green opacity-70" />
           </div>
         </div>
+
         <div className="p-4">
           <textarea
-            className="w-full h-28 font-mono text-sm p-4 border border-gray-100 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none bg-gray-50 text-gray-800"
+            className="w-full h-28 font-mono text-sm p-4 border border-border-dark rounded-xl focus:outline-none focus:border-accent-cyan resize-none bg-bg-base text-text-primary placeholder:text-text-muted transition-colors"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             spellCheck={false}
           />
         </div>
+
         <div className="px-4 pb-4 flex justify-center">
           <button
             onClick={calculate}
             disabled={loading || !input.trim()}
-            className="bg-primary hover:bg-green-800 text-white px-8 py-3 rounded-lg font-bold flex items-center gap-3 transition-all active:scale-[0.98] disabled:opacity-60"
+            className="font-black px-10 py-3.5 rounded-xl flex items-center gap-3 transition-all active:scale-[0.98] disabled:opacity-50 text-white shadow-glow-cyan"
+            style={{
+              background: loading
+                ? "rgba(6,182,212,0.3)"
+                : "linear-gradient(135deg, #06b6d4 0%, #6366f1 100%)",
+            }}
           >
             {loading ? (
               <>
-                <span className="material-symbols-outlined animate-spin" style={{ fontSize: 18 }}>refresh</span>
+                <span
+                  className="material-symbols-outlined animate-spin_slow"
+                  style={{ fontSize: 18 }}
+                >
+                  refresh
+                </span>
                 Running runway analysis...
               </>
             ) : (
               <>
-                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: 18 }}>calculate</span>
-                Calculate Impact
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontVariationSettings: "'FILL' 1", fontSize: 18 }}
+                >
+                  calculate
+                </span>
+                Calculate Impact →
               </>
             )}
           </button>
@@ -84,108 +120,160 @@ export default function RunwayAnalyzer() {
 
       {/* Results */}
       {result && (
-        <div className="space-y-5 animate-fadeInUp">
-          {/* Cost Comparison */}
-          <div className="grid grid-cols-2 gap-5">
-            <div className="bg-white border border-gray-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Current Cost</span>
-                <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">BEFORE</span>
+        <div className="space-y-4 animate-fadeInUp">
+          {/* Cost Comparison Grid */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Before */}
+            <div className="glass rounded-2xl p-5 border border-border-dark">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.12em]">
+                  Current Cost
+                </span>
+                <span className="text-[9px] font-black text-text-muted bg-border-dark px-2 py-0.5 rounded uppercase tracking-wider">
+                  BEFORE
+                </span>
               </div>
-              <div className="text-4xl font-extrabold text-gray-900">
-                ${result.current_cost.toLocaleString()}
-                <span className="text-sm font-medium text-gray-400">/mo</span>
+              <div className="text-5xl font-black text-text-primary">
+                ${(result.current_cost || 0).toLocaleString()}
+                <span className="text-sm font-medium text-text-muted">/mo</span>
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-100">
+              <div className="mt-4 pt-4 border-t border-border-dark">
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-gray-400">Current runway</span>
-                  <span className="font-semibold">14 months</span>
+                  <span className="text-text-muted">Current runway</span>
+                  <span className="font-bold text-text-secondary">14 months</span>
                 </div>
-                <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-gray-400" style={{ width: "60%" }} />
+                <div className="w-full h-2 bg-border-dark rounded-full overflow-hidden">
+                  <div className="h-full bg-text-muted rounded-full" style={{ width: "60%" }} />
                 </div>
               </div>
             </div>
 
-            <div className="bg-white border border-emerald-200 rounded-xl p-5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-tight">
+            {/* After */}
+            <div className="glass rounded-2xl p-5 border border-accent-green border-opacity-30 relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-accent-green bg-opacity-15 text-accent-green text-[9px] font-black px-3 py-1 rounded-bl-lg uppercase tracking-wider">
                 Optimized
               </div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold text-emerald-500 uppercase tracking-wider">New Cost</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] font-bold text-accent-green uppercase tracking-[0.12em]">
+                  New Cost
+                </span>
               </div>
-              <div className="text-4xl font-extrabold text-emerald-600">
-                ${result.new_cost.toLocaleString()}
-                <span className="text-sm font-medium text-emerald-400">/mo</span>
+              <div className="text-5xl font-black text-accent-green stat-glow">
+                ${(result.new_cost || 0).toLocaleString()}
+                <span className="text-sm font-medium text-accent-green opacity-60">/mo</span>
               </div>
-              <div className="mt-4 pt-4 border-t border-emerald-100">
+              <div className="mt-4 pt-4 border-t border-accent-green border-opacity-20">
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="text-emerald-600">Extended runway</span>
-                  <span className="font-bold text-emerald-700">14 months (+{result.runway_extension_days}d)</span>
+                  <span className="text-accent-green opacity-70">Extended runway</span>
+                  <span className="font-black text-accent-green">
+                    14 months (+{result.runway_extension_days || 0}d)
+                  </span>
                 </div>
-                <div className="w-full h-1.5 bg-emerald-50 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500" style={{ width: "75%" }} />
+                <div className="w-full h-2 bg-accent-green bg-opacity-10 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: "75%", background: "linear-gradient(90deg, #10b981, #06b6d4)" }} />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Big Savings Number */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 text-center">
-            <div className="text-5xl font-extrabold text-emerald-500 mb-1">
-              +${result.monthly_saving.toLocaleString()}/month saved
+          {/* Trophy Moment — Big Savings */}
+          <div className="glass rounded-2xl p-8 text-center border border-accent-green border-opacity-20 relative overflow-hidden">
+            <div className="absolute inset-0 bg-accent-green opacity-[0.03] rounded-2xl" />
+            <div className="relative">
+              <div
+                className="text-6xl font-black text-accent-green mb-2 stat-glow"
+                style={{ fontVariantNumeric: "tabular-nums" }}
+              >
+                +${(result.monthly_saving || 0).toLocaleString()}
+                <span className="text-2xl">/month saved</span>
+              </div>
+              <div className="text-text-muted text-sm">
+                ${(result.annual_saving || 0).toLocaleString()} saved annually
+              </div>
+              {result.saving_percentage > 0 && (
+                <div className="mt-2 inline-flex items-center gap-1.5 bg-accent-green bg-opacity-10 border border-accent-green border-opacity-25 text-accent-green text-xs font-bold px-3 py-1 rounded-full">
+                  <span className="material-symbols-outlined" style={{ fontSize: 12, fontVariationSettings: "'FILL' 1" }}>trending_down</span>
+                  {result.saving_percentage}% cost reduction
+                </div>
+              )}
             </div>
-            <div className="text-gray-500 text-sm">${result.annual_saving.toLocaleString()} annually</div>
           </div>
 
-          {/* Runway Bar */}
-          <div className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-semibold text-gray-700">Runway Extension</span>
-              <span className="text-sm font-bold text-emerald-600">+{result.runway_extension_days} days</span>
+          {/* Runway Bar — THE TROPHY MOMENT */}
+          <div className="glass rounded-2xl p-6 border border-border-dark">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-bold text-text-primary">
+                Runway Extension
+              </span>
+              <span className="text-sm font-black text-accent-green">
+                +{result.runway_extension_days} days
+              </span>
             </div>
-            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+            <div className="w-full h-4 bg-border-dark rounded-full overflow-hidden">
               <div
-                className="h-full bg-emerald-500 rounded-full transition-all duration-1000 ease-out"
+                className="runway-bar h-full"
                 style={{ width: `${barWidth}%` }}
               />
             </div>
-            <p className="text-xs text-gray-400 mt-2">{result.runway_extension_explanation}</p>
+            <p className="text-xs text-text-muted mt-3">
+              {result.runway_extension_explanation}
+            </p>
           </div>
 
           {/* Code Fix */}
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border-b border-gray-200">
-              <span className="material-symbols-outlined text-primary" style={{ fontSize: 16 }}>code</span>
-              <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Recommended Fix</span>
+          <div className="glass rounded-2xl overflow-hidden border border-border-dark">
+            <div className="flex items-center gap-2 px-4 py-3 bg-bg-sidebar border-b border-border-dark">
+              <span
+                className="material-symbols-outlined text-accent-green"
+                style={{ fontSize: 14, fontVariationSettings: "'FILL' 1" }}
+              >
+                code
+              </span>
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-[0.12em]">
+                Recommended Fix
+              </span>
             </div>
-            <pre className="p-4 text-sm font-mono text-emerald-700 bg-gray-900 overflow-x-auto leading-relaxed">
+            <pre className="p-5 text-sm font-mono text-accent-green bg-bg-base overflow-x-auto leading-relaxed">
               <code>{result.code_fix}</code>
             </pre>
           </div>
 
           {/* Explanation */}
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
+          <div className="glass rounded-2xl p-5 border border-accent-cyan border-opacity-20">
             <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-blue-500 mt-0.5" style={{ fontSize: 18 }}>info</span>
+              <span
+                className="material-symbols-outlined text-accent-cyan mt-0.5 flex-shrink-0"
+                style={{ fontSize: 18, fontVariationSettings: "'FILL' 1" }}
+              >
+                info
+              </span>
               <div>
-                <p className="text-sm text-blue-800 mb-1">{result.explanation}</p>
+                <p className="text-sm text-text-secondary leading-relaxed mb-1">
+                  {result.explanation}
+                </p>
                 {result.bonus_tip && (
-                  <p className="text-xs text-blue-600 font-medium">💡 {result.bonus_tip}</p>
+                  <p className="text-xs text-accent-cyan font-semibold">
+                    💡 {result.bonus_tip}
+                  </p>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Action Tray */}
-          <div className="flex justify-center gap-6 text-gray-400 py-2 border-t border-gray-100">
+          {/* Action tray */}
+          <div className="flex justify-center gap-6 text-text-muted py-2 border-t border-border-dark">
             {[
               { icon: "download", label: "Export Report" },
               { icon: "share", label: "Share Dashboard" },
               { icon: "history", label: "View History" },
             ].map((btn) => (
-              <button key={btn.label} className="flex items-center gap-2 text-sm hover:text-gray-900 transition-colors">
-                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>{btn.icon}</span>
+              <button
+                key={btn.label}
+                className="flex items-center gap-2 text-xs hover:text-text-primary transition-colors"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
+                  {btn.icon}
+                </span>
                 {btn.label}
               </button>
             ))}

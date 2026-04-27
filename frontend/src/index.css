@@ -1,20 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f9f9ff;
-  color: #141b2b;
-  -webkit-font-smoothing: antialiased;
+:root {
+  --bg-primary: #07080f;
+  --bg-secondary: #0d0f1c;
+  --bg-card: #111827;
+  --bg-card-hover: #161d2e;
+  --bg-sidebar: #0a0c18;
+  --accent: #6366f1;
+  --accent-bright: #818cf8;
+  --accent-green: #10b981;
+  --accent-green-bright: #34d399;
+  --accent-cyan: #06b6d4;
+  --accent-cyan-bright: #22d3ee;
+  --accent-red: #ef4444;
+  --accent-amber: #f59e0b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --border: #1e2a3b;
+  --border-bright: #2d3f55;
+  --glow-green: 0 0 20px rgba(16, 185, 129, 0.3);
+  --glow-purple: 0 0 20px rgba(99, 102, 241, 0.3);
+  --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
 }
 
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: #2d3f55; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3d5470; }
+
+/* ── Material Icons ── */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   font-size: 20px;
@@ -23,12 +56,120 @@ body {
   user-select: none;
 }
 
-/* Terminal scrollbar */
-.terminal-body::-webkit-scrollbar { width: 4px; }
-.terminal-body::-webkit-scrollbar-track { background: #0a0a0f; }
-.terminal-body::-webkit-scrollbar-thumb { background: #00d4ff44; border-radius: 2px; }
+/* ── Glass morphism cards ── */
+.glass {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.07);
+}
 
-/* Code block scrollbar */
+.glass-bright {
+  background: rgba(22, 29, 46, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Gradient borders ── */
+.border-gradient-green {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.border-gradient-green::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(16,185,129,0.5), rgba(6,182,212,0.2));
+  z-index: -1;
+}
+
+/* ── Glow effects ── */
+.glow-green { box-shadow: var(--glow-green); }
+.glow-purple { box-shadow: var(--glow-purple); }
+.glow-cyan { box-shadow: var(--glow-cyan); }
+
+/* ── Terminal ── */
+.terminal-body::-webkit-scrollbar { width: 4px; }
+.terminal-body::-webkit-scrollbar-track { background: #07080f; }
+.terminal-body::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 2px; }
+
+/* ── Code blocks ── */
 pre::-webkit-scrollbar { height: 4px; }
-pre::-webkit-scrollbar-track { background: #1a1a2e; }
-pre::-webkit-scrollbar-thumb { background: #00d4ff44; border-radius: 2px; }
+pre::-webkit-scrollbar-track { background: #07080f; }
+pre::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.3); border-radius: 2px; }
+
+/* ── Input base styles ── */
+input[type="text"],
+input[type="number"],
+textarea {
+  background: rgba(7, 8, 15, 0.8) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.15) !important;
+  outline: none !important;
+}
+
+/* ── Checkbox ── */
+input[type="checkbox"] {
+  accent-color: var(--accent-green);
+}
+
+/* ── Stat number pulse ── */
+@keyframes number-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(16,185,129,0); }
+  50% { text-shadow: 0 0 20px rgba(16,185,129,0.6); }
+}
+.stat-glow { animation: number-glow 3s ease-in-out infinite; }
+
+/* ── Scanline effect for terminal ── */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Ambient gradient background ── */
+.ambient-bg {
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(99,102,241,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 30%, rgba(6,182,212,0.06) 0%, transparent 60%),
+    var(--bg-primary);
+}
+
+/* ── Sidebar active indicator ── */
+.nav-active {
+  background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.08));
+  border-left: 2px solid var(--accent-green);
+}
+
+/* ── Runway bar gradient ── */
+.runway-bar {
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  border-radius: 999px;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(16,185,129,0.5);
+}
+
+/* ── Action card priority ring ── */
+.priority-1 { box-shadow: 0 0 0 1px rgba(239,68,68,0.4), 0 4px 24px rgba(239,68,68,0.08); }
+.priority-2 { box-shadow: 0 0 0 1px rgba(245,158,11,0.3), 0 4px 24px rgba(245,158,11,0.06); }
+.priority-3 { box-shadow: 0 0 0 1px rgba(99,102,241,0.25), 0 4px 24px rgba(99,102,241,0.05); }
+
+/* ── Badge variants ── */
+.badge-deprecation { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+.badge-cost { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+.badge-opportunity { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }

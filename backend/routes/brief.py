@@ -46,6 +46,7 @@ def generate():
         brief = generate_brief(stack_profile, behavior_profile)
         brief['date'] = datetime.utcnow().isoformat()
         brief['founder_id'] = founder_id
+        brief['total_monthly_cost'] = stack_profile.get('total_monthly_cost', 0)
 
         # Include memory metadata in response
         if behavior_profile.get('has_history'):
