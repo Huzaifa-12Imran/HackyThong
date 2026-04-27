@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StackPulse | AI Intelligence for Founders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+            background: radial-gradient(circle at top right, #1e1b4b, transparent),
+                        radial-gradient(circle at bottom left, #0f172a, transparent);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s active;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px dashed var(--border);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: inline-block;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .action-item {
+            border-left: 3px solid var(--primary);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-title { font-weight: 600; color: #fff; }
+        .action-meta { font-size: 0.8rem; color: var(--text-dim); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>StackPulse</h1>
+            <p class="subtitle">AI-Powered Technical Intelligence for Founders</p>
+            <div style="margin-top: 1rem;">
+                <span class="status-dot"></span> <span id="health-status" style="font-size: 0.8rem; color: var(--text-dim);">Connecting to Backend...</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- Register Card -->
+            <div class="card">
+                <h2>📦 Register Stack</h2>
+                <div class="input-group">
+                    <label>Founder ID</label>
+                    <input type="text" id="founder-id" value="demo-founder-001">
+                </div>
+                <div class="input-group">
+                    <label>Tech Stack (JSON)</label>
+                    <textarea id="stack-json" rows="6">
+{
+  "frontend": "React/Vite",
+  "backend": "Python/Flask",
+  "database": "Firestore",
+  "llm": "Gemini 2.0 Flash",
+  "infrastructure": "Vercel + GCP"
+}</textarea>
+                </div>
+                <button id="btn-register">Register Stack</button>
+                <div id="register-result" class="result-box">Ready to register...</div>
+            </div>
+
+            <!-- Generate Brief Card -->
+            <div class="card">
+                <h2>✨ Generate Intelligence Brief</h2>
+                <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                    Analyze your current stack against the latest AI ecosystem developments.
+                </p>
+                <button id="btn-brief" style="background: linear-gradient(135deg, #6366f1, #a855f7);">Generate New Brief</button>
+                <div id="brief-result" class="result-box">Intelligence results will appear here...</div>
+            </div>
+
+            <!-- Cost Analysis Card -->
+            <div class="card full-width">
+                <h2>💸 Cost Impact Analysis</h2>
+                <div class="input-group">
+                    <label>Market Change or Pricing Update</label>
+                    <textarea id="change-desc" rows="2" placeholder="e.g., Gemini 2.5 Flash pricing reduced by 50% for high volume tokens"></textarea>
+                </div>
+                <button id="btn-analyze" style="background: var(--accent);">Calculate Financial Impact</button>
+                <div id="analyze-result" class="result-box">Financial analysis results...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = "http://localhost:8080";
+
+        // Helper to handle fetch
+        async function api(path, method = 'GET', body = null) {
+            const options = {
+                method,
+                headers: { 'Content-Type': 'application/json' }
+            };
+            if (body) options.body = JSON.stringify(body);
+            
+            try {
+                const res = await fetch(`${API_BASE}${path}`, options);
+                return await res.json();
+            } catch (err) {
+                return { success: false, message: `Connection failed: ${err.message}` };
+            }
+        }
+
+        // Check Health
+        async function checkHealth() {
+            const res = await api('/health');
+            const statusText = document.getElementById('health-status');
+            if (res.success) {
+                statusText.innerText = "Backend Online (8080)";
+                statusText.style.color = "#10b981";
+            } else {
+                statusText.innerText = "Backend Offline";
+                statusText.style.color = "#ef4444";
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('btn-register').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-register');
+            const result = document.getElementById('register-result');
+            const founderId = document.getElementById('founder-id').value;
+            const stackStr = document.getElementById('stack-json').value;
+            
+            try {
+                const stack = JSON.parse(stackStr);
+                btn.classList.add('loading');
+                const res = await api('/stack/register', 'POST', { founder_id: founderId, stack });
+                result.innerText = JSON.stringify(res, null, 2);
+            } catch (e) {
+                result.innerText = "Invalid JSON in Stack field";
+            } finally {
+                btn.classList.remove('loading');
+            }
+        });
+
+        document.getElementById('btn-brief').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-brief');
+            const result = document.getElementById('brief-result');
+            const founderId = document.getElementById('founder-id').value;
+
+            btn.classList.add('loading');
+            result.innerText = "AI is thinking...";
+            
+            const res = await api('/brief/generate', 'POST', { founder_id: founderId });
+            
+            if (res.success && res.data.actions) {
+                let html = `<strong>Summary:</strong> ${res.data.summary}\n\n`;
+                res.data.actions.forEach(a => {
+                    html += `[${a.type.toUpperCase()}] ${a.title}\nImpact: ${a.impact} | Effort: ${a.effort}\n${a.details}\n\n`;
+                });
+                result.innerText = html;
+            } else {
+                result.innerText = JSON.stringify(res, null, 2);
+            }
+            btn.classList.remove('loading');
+        });
+
+        document.getElementById('btn-analyze').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-analyze');
+            const result = document.getElementById('analyze-result');
+            const founderId = document.getElementById('founder-id').value;
+            const change = document.getElementById('change-desc').value;
+
+            if (!change) return alert("Describe a change first!");
+
+            btn.classList.add('loading');
+            result.innerText = "Calculating impact...";
+            
+            const res = await api('/analyze/cost-impact', 'POST', { founder_id: founderId, change });
+            
+            if (res.success) {
+                const d = res.data;
+                result.innerText = `Current Cost: $${d.current_cost}/mo\nNew Cost: $${d.new_cost}/mo\nSavings: $${d.monthly_saving}/mo\n\nUrgency: ${d.urgency}\nAction: ${d.action_required}\n\n${d.explanation}`;
+            } else {
+                result.innerText = JSON.stringify(res, null, 2);
+            }
+            btn.classList.remove('loading');
+        });
+
+        // Initial checks
+        checkHealth();
+        setInterval(checkHealth, 5000);
+    </script>
+</body>
+</html>
