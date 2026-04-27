@@ -31,114 +31,142 @@
             background-attachment: fixed;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: left; margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        .container { max-width: 1300px; margin: 0 auto; }
+        header { text-align: left; margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center; }
         
         h1 { font-size: 2.5rem; font-weight: 700; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .health-badge {
             background: var(--card-bg);
-            padding: 1.5rem 2.5rem;
-            border-radius: 1.5rem;
+            padding: 1rem 2rem;
+            border-radius: 1.25rem;
             border: 1px solid var(--border);
-            text-align: center;
+            text-align: right;
         }
-        .health-score { font-size: 3rem; font-weight: 800; color: var(--accent); line-height: 1; }
-        .health-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .health-score { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-        .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; }
-        .full-width { grid-column: span 3; }
-        .two-thirds { grid-column: span 2; }
+        .grid { display: grid; grid-template-columns: 350px 1fr 350px; gap: 1.5rem; }
+        .card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; height: fit-content; }
+        .span-2 { grid-column: span 2; }
+        .full { grid-column: span 3; }
         
-        h2 { font-size: 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        h2 { font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
         
-        input, textarea { width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem; color: var(--text); font-family: inherit; margin-bottom: 1rem; }
+        input, textarea { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem; color: var(--text); font-family: inherit; margin-bottom: 1rem; }
         button { width: 100%; background: var(--primary); color: white; border: none; border-radius: 0.75rem; padding: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         button:hover { background: var(--primary-hover); transform: translateY(-2px); }
         
-        .result-box { margin-top: 1rem; padding: 1rem; background: rgba(0, 0, 0, 0.4); border-radius: 0.75rem; font-size: 0.9rem; border: 1px solid var(--border); min-height: 50px; }
+        .terminal { background: #000; border-radius: 0.75rem; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #00ff00; height: 150px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid #333; }
+        .terminal-line { margin-bottom: 0.2rem; }
 
-        .action-card { background: rgba(255, 255, 255, 0.05); border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid var(--primary); }
-        .action-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-        .action-type { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--primary); }
-        .action-btns { display: flex; gap: 0.5rem; }
-        .mini-btn { padding: 0.25rem 0.5rem; font-size: 0.7rem; border-radius: 0.4rem; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-dim); }
-        .mini-btn:hover { background: var(--border); color: white; }
+        .runway-viz { background: rgba(255,255,255,0.05); height: 12px; border-radius: 6px; overflow: hidden; margin: 1rem 0; position: relative; }
+        .runway-bar { height: 100%; background: var(--accent); width: 40%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .runway-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
 
-        .chat-msg { margin-bottom: 1rem; padding: 0.75rem; border-radius: 0.75rem; max-width: 80%; }
-        .user-msg { background: var(--primary); margin-left: auto; text-align: right; }
+        .action-card { background: rgba(255, 255, 255, 0.05); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.5rem; border: 1px solid var(--border); transition: all 0.3s; }
+        .action-card:hover { border-color: var(--primary); }
+        .code-snippet { background: #111; padding: 1rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.8rem; margin-top: 1rem; color: #818cf8; overflow-x: auto; border: 1px solid #222; position: relative; }
+        .code-snippet::before { content: "RECOMMENDED FIX"; position: absolute; top: 0; right: 10px; font-size: 0.6rem; color: #444; }
+
+        .chat-msg { margin-bottom: 1rem; padding: 0.75rem; border-radius: 0.75rem; max-width: 85%; font-size: 0.9rem; }
+        .user-msg { background: var(--primary); margin-left: auto; color: white; }
         .ai-msg { background: var(--card-bg); border: 1px solid var(--border); }
-
-        .loading { opacity: 0.5; pointer-events: none; }
-        .runway-badge { background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.5rem; border-radius: 0.5rem; font-weight: 600; margin-top: 0.5rem; display: inline-block; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div>
-                <h1>StackPulse Pro</h1>
-                <p style="color: var(--text-dim);">Live AI Ecosystem Intelligence Dashboard</p>
+                <h1 id="main-title">StackPulse <span style="font-weight: 300; opacity: 0.6;">Intelligence</span></h1>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Founder: <span id="display-founder">demo-founder-001</span> | Target: sam_hackathon_persona</p>
             </div>
             <div class="health-badge">
-                <div class="health-label">Stack Health</div>
-                <div id="health-score" class="health-score">--</div>
-                <div id="health-grade" style="color: var(--text-dim); font-weight: 600;">Calculating...</div>
+                <div class="health-score" id="health-score">--</div>
+                <div id="health-label" style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Stack Health Score</div>
             </div>
         </header>
 
         <div class="grid">
-            <!-- Left Column: Config -->
+            <!-- Sidebar: Config -->
             <div class="card">
-                <h2>⚙️ Configuration</h2>
+                <h2>🛠️ Project Context</h2>
                 <input type="text" id="founder-id" value="demo-founder-001" placeholder="Founder ID">
-                <input type="number" id="burn-rate" value="5000" placeholder="Monthly Burn Rate ($)">
-                <textarea id="stack-json" rows="8">
-{
-  "frontend": "React/Vite",
-  "backend": "Python/Flask",
-  "database": "Firestore",
-  "llm": "Gemini 2.5 Flash"
+                <label style="font-size: 0.7rem; color: var(--text-dim);">MONTHLY BURN ($)</label>
+                <input type="number" id="burn-rate" value="8000">
+                <label style="font-size: 0.7rem; color: var(--text-dim);">TECH STACK</label>
+                <textarea id="stack-json" rows="6">{
+  "llm": "Gemini 2.5 Flash",
+  "infra": "Cloud Run + Firebase",
+  "db": "Firestore",
+  "saas": ["Pinecone", "Stripe"]
 }</textarea>
-                <button id="btn-register">Update Stack & Pulse</button>
-            </div>
+                <button id="btn-register">Sync Strategy</button>
 
-            <!-- Middle Column: Intelligence -->
-            <div class="card two-thirds">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <h2>✨ AI Intelligence Brief</h2>
-                    <button id="btn-brief" style="width: auto; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #6366f1, #a855f7);">Scan Ecosystem</button>
-                </div>
-                <div id="brief-result" style="min-height: 400px;">
-                    <div style="color: var(--text-dim); text-align: center; margin-top: 100px;">Click "Scan Ecosystem" to fetch today's live AI news and analyze impact.</div>
-                </div>
-            </div>
-
-            <!-- Bottom Left: Chat -->
-            <div class="card two-thirds">
-                <h2>💬 Advisor Chat</h2>
-                <div id="chat-window" class="result-box" style="height: 250px; overflow-y: auto; display: flex; flex-direction: column;">
-                    <div class="chat-msg ai-msg">Hello! I'm your technical advisor. Ask me anything about your stack or the latest AI news.</div>
-                </div>
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                    <input type="text" id="chat-input" placeholder="Should I switch to Gemini 1.5 Pro?" style="margin-bottom: 0;">
-                    <button id="btn-chat" style="width: auto; padding: 0 1.5rem;">Ask</button>
+                <div style="margin-top: 2rem;">
+                    <h2>📈 Survival Runway</h2>
+                    <div class="runway-viz"><div id="runway-bar" class="runway-bar"></div></div>
+                    <div class="runway-labels">
+                        <span>Today</span>
+                        <span id="runway-days">-- Days</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Bottom Right: Cost -->
+            <!-- Main: Intelligence -->
             <div class="card">
-                <h2>💸 Runway Impact</h2>
-                <textarea id="change-desc" rows="3" placeholder="Pricing update description..."></textarea>
-                <button id="btn-analyze" style="background: var(--accent);">Analyze Impact</button>
-                <div id="analyze-result" class="result-box"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>📡 Live Pulse Monitor</h2>
+                    <button id="btn-brief" style="width: auto; padding: 0.5rem 1.25rem; font-size: 0.8rem; background: linear-gradient(to right, #6366f1, #c084fc);">Run Ecosystem Scan</button>
+                </div>
+                
+                <div id="terminal" class="terminal">
+                    <div class="terminal-line">> System Idle. Ready for ecosystem scan...</div>
+                </div>
+
+                <div id="brief-content">
+                    <div style="text-align: center; color: var(--text-dim); margin-top: 50px;">
+                        <p>No active briefings.</p>
+                        <p style="font-size: 0.8rem;">Click "Run Ecosystem Scan" to process live signals.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Chat & Impact -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="card">
+                    <h2>💬 Advisor Chat</h2>
+                    <div id="chat-window" style="height: 200px; overflow-y: auto; margin-bottom: 1rem; padding-right: 5px;">
+                        <div class="chat-msg ai-msg">Sam, how can I help with your stack today?</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="chat-input" placeholder="Ask advisor..." style="margin-bottom:0; font-size: 0.8rem;">
+                        <button id="btn-chat" style="width: auto; padding: 0 1rem;">→</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>💸 Impact Simulator</h2>
+                    <textarea id="change-desc" rows="2" placeholder="e.g. Gemini pricing cut 50%" style="font-size: 0.8rem;"></textarea>
+                    <button id="btn-analyze" style="background: var(--accent); font-size: 0.8rem;">Run Simulation</button>
+                    <div id="analyze-result" style="margin-top: 1rem;"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         const API_BASE = "http://localhost:8080";
+        let currentRunway = 120; // Default days
+
+        function log(msg, color="#00ff00") {
+            const term = document.getElementById('terminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.color = color;
+            line.innerText = `> ${msg}`;
+            term.appendChild(line);
+            term.scrollTop = term.scrollHeight;
+        }
 
         async function api(path, method = 'GET', body = null) {
             try {
@@ -151,69 +179,73 @@
             } catch (err) { return { success: false, message: err.message }; }
         }
 
-        async function updateHealth() {
-            const founderId = document.getElementById('founder-id').value;
-            const res = await api(`/stack/health/${founderId}`);
+        async function refreshHealth() {
+            const id = document.getElementById('founder-id').value;
+            const res = await api(`/stack/health/${id}`);
             if (res.success) {
                 document.getElementById('health-score').innerText = res.data.score;
-                document.getElementById('health-grade').innerText = `${res.data.grade} | ${res.data.top_risk}`;
+                log(`Health Scan: ${res.data.grade} Score. Risk: ${res.data.top_risk}`, "#818cf8");
             }
         }
 
         document.getElementById('btn-register').addEventListener('click', async () => {
-            const founderId = document.getElementById('founder-id').value;
-            const burnRate = parseFloat(document.getElementById('burn-rate').value);
+            log("Syncing project context with Firestore...");
+            const id = document.getElementById('founder-id').value;
+            const burn = parseFloat(document.getElementById('burn-rate').value);
             const stack = JSON.parse(document.getElementById('stack-json').value);
-            await api('/stack/register', 'POST', { founder_id: founderId, stack, burn_rate: burnRate });
-            updateHealth();
+            const res = await api('/stack/register', 'POST', { founder_id: id, stack, burn_rate: burn });
+            if (res.success) {
+                log("Strategy synchronized successfully.", "#10b981");
+                refreshHealth();
+            }
         });
 
         document.getElementById('btn-brief').addEventListener('click', async () => {
-            const container = document.getElementById('brief-result');
-            const founderId = document.getElementById('founder-id').value;
-            container.innerHTML = "Scanning HN, Reddit, and Cloud Feeds... Analysing Today's News...";
+            const container = document.getElementById('brief-content');
+            const id = document.getElementById('founder-id').value;
             
-            const res = await api('/brief/generate', 'POST', { founder_id: founderId });
+            log("Accessing Hacker News RSS...");
+            log("Crawling Reddit r/MachineLearning...");
+            log("Parsing Google Cloud Release Notes...");
+            
+            const res = await api('/brief/generate', 'POST', { founder_id: id });
             if (res.success) {
-                container.innerHTML = `<div style="margin-bottom: 1rem; color: var(--accent)"><strong>Summary:</strong> ${res.data.summary}</div>`;
+                log(`Ecosystem Scan Complete. Found ${res.data.raw_logs.length} signals.`, "#10b981");
+                res.data.raw_logs.forEach(title => log(`Detected: ${title.substring(0, 50)}...`, "#666"));
+                
+                container.innerHTML = `<div style="margin: 1.5rem 0; padding: 1rem; border-radius: 0.75rem; background: rgba(16, 185, 129, 0.1); color: var(--accent); border: 1px solid var(--accent);"><strong>AI Summary:</strong> ${res.data.summary}</div>`;
+                
                 res.data.actions.forEach(a => {
-                    const div = document.createElement('div');
-                    div.className = 'action-card';
-                    div.innerHTML = `
-                        <div class="action-header">
-                            <span class="action-type">${a.type}</span>
-                            <div class="action-btns">
-                                <button class="mini-btn" onclick="updateAction('${a.id}', 'completed')">Done</button>
-                                <button class="mini-btn" onclick="updateAction('${a.id}', 'ignored')">Hide</button>
-                            </div>
+                    const card = document.createElement('div');
+                    card.className = 'action-card';
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">${a.type}</span>
+                            <span style="font-size: 0.7rem; background: var(--border); padding: 2px 8px; border-radius: 4px;">Effort: ${a.effort}</span>
                         </div>
-                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${a.title}</div>
-                        <div style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.5rem;">Impact: ${a.impact} | Effort: ${a.effort}</div>
-                        <div style="font-size: 0.85rem;">${a.details}</div>
+                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">${a.title}</div>
+                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">${a.details}</p>
+                        <div style="background: rgba(99, 102, 241, 0.1); padding: 0.5rem; border-radius: 0.5rem; font-weight: 600; color: var(--primary); font-size: 0.8rem;">
+                            Impact: ${a.impact}
+                        </div>
+                        <div class="code-snippet">${a.code_fix}</div>
                     `;
-                    container.appendChild(div);
+                    container.appendChild(card);
                 });
             }
         });
 
-        async function updateAction(actionId, status) {
-            const founderId = document.getElementById('founder-id').value;
-            await api('/action/update', 'POST', { founder_id: founderId, action_id: actionId, status });
-            alert(`Marked as ${status}. Gemini will remember this for the next brief.`);
-        }
-
         document.getElementById('btn-chat').addEventListener('click', async () => {
             const input = document.getElementById('chat-input');
             const win = document.getElementById('chat-window');
-            const question = input.value;
-            if (!question) return;
-
-            win.innerHTML += `<div class="chat-msg user-msg">${question}</div>`;
-            input.value = "";
+            const q = input.value;
+            if(!q) return;
             
-            const res = await api('/chat', 'POST', { question, founder_id: document.getElementById('founder-id').value });
-            if (res.success) {
-                win.innerHTML += `<div class="chat-msg ai-msg">${res.data.answer}${res.data.action ? `<br><br><strong>Next Step:</strong> ${res.data.action}` : ''}</div>`;
+            win.innerHTML += `<div class="chat-msg user-msg">${q}</div>`;
+            input.value = "";
+            const res = await api('/chat', 'POST', { question: q, founder_id: document.getElementById('founder-id').value });
+            if(res.success) {
+                win.innerHTML += `<div class="chat-msg ai-msg">${res.data.answer}</div>`;
             }
             win.scrollTop = win.scrollHeight;
         });
@@ -226,15 +258,22 @@
             });
             if (res.success) {
                 const d = res.data;
+                log(`Cost Simulation: Saved $${d.monthly_saving}/mo. Extending runway by ${d.runway_extension_days} days.`, "#10b981");
                 resBox.innerHTML = `
-                    <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent);">$${d.monthly_saving}/mo Saving</div>
-                    <div class="runway-badge">+${d.runway_extension_days} Days Runway</div>
-                    <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">${d.explanation}</p>
+                    <div style="font-size: 1.2rem; font-weight: 800; color: var(--accent);">$${d.monthly_saving} Monthly Saving</div>
+                    <div style="color: var(--text-dim); font-size: 0.8rem;">${d.explanation}</div>
                 `;
+                
+                // Update Runway UI
+                const newRunway = 120 + d.runway_extension_days;
+                document.getElementById('runway-days').innerText = `${newRunway} Days`;
+                document.getElementById('runway-bar').style.width = '75%';
             }
         });
 
-        updateHealth();
+        // Initial UI State
+        document.getElementById('runway-days').innerText = `120 Days`;
+        document.getElementById('runway-bar').style.width = '40%';
     </script>
 </body>
 </html>

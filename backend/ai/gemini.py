@@ -21,28 +21,26 @@ def generate_brief(stack_profile: dict, memory: dict = None) -> dict:
     REAL-TIME ECOSYSTEM NEWS:
     {json.dumps(news, indent=2)}
 
-    PREVIOUSLY SURFACED ACTIONS (DO NOT REPEAT THESE):
-    {json.dumps(seen_actions)}
-    IGNORED ACTIONS:
-    {json.dumps(ignored_actions)}
+    PREVIOUSLY SURFACED ACTIONS: {json.dumps(seen_actions)}
 
-    Based on the real news above and the stack, generate EXACTLY 2-3 ACTIONABLE items.
-    Focus on: model pricing changes, deprecations, framework updates, cost savings.
+    Based on news and stack, generate 2-3 ACTIONABLE items.
+    For each item, you MUST provide a "code_fix" snippet (Python/JS/Config).
 
-    Respond ONLY in this exact JSON format:
+    Respond ONLY in JSON:
     {{
       "actions": [
         {{
-          "id": "unique_slug_id",
-          "priority": 1,
+          "id": "unique_id",
           "type": "cost_saving|deprecation|opportunity",
-          "title": "short title",
-          "impact": "specific dollar or time impact",
-          "effort": "time estimate",
-          "details": "2-3 sentence explanation"
+          "title": "...",
+          "impact": "...",
+          "effort": "...",
+          "details": "...",
+          "code_fix": "exact code block or config change"
         }}
       ],
-      "summary": "one line summary"
+      "summary": "...",
+      "raw_logs": {json.dumps([n['title'] for n in news[:8]])}
     }}
     """
     try:
@@ -53,7 +51,7 @@ def generate_brief(stack_profile: dict, memory: dict = None) -> dict:
             if text.startswith("json"): text = text[4:]
         return json.loads(text)
     except Exception as e:
-        return {"actions": [], "summary": f"Could not generate brief: {str(e)}"}
+        return {"actions": [], "summary": f"Error: {str(e)}", "raw_logs": []}
 
 def calculate_stack_health(stack_profile: dict) -> dict:
     news = fetch_latest_ai_news()
@@ -71,7 +69,7 @@ def calculate_stack_health(stack_profile: dict) -> dict:
         "deprecation_risk": 0-100,
         "competitive_position": 0-100
       }},
-      "top_risk": "one sentence about biggest risk right now"
+      "top_risk": "..."
     }}
     """
     try:
@@ -82,25 +80,22 @@ def calculate_stack_health(stack_profile: dict) -> dict:
             if text.startswith("json"): text = text[4:]
         return json.loads(text)
     except Exception as e:
-        return {"score": 0, "grade": "N/A", "error": str(e)}
+        return {"score": 0, "grade": "N/A"}
 
 def analyze_cost_impact(stack_profile: dict, change_description: str, burn_rate: float = 0) -> dict:
     prompt = f"""
-    You are a cost analysis AI for startup technical founders.
-    Founder's stack/costs: {json.dumps(stack_profile)}
+    Founder's stack: {json.dumps(stack_profile)}
     Burn Rate: ${burn_rate}/month
-    Pricing/Tech Change: {change_description}
+    Change: {change_description}
 
-    Respond ONLY in JSON:
+    Calculate exact impact.
+    Return ONLY JSON:
     {{
       "current_cost": 0,
       "new_cost": 0,
       "monthly_saving": 0,
-      "annual_saving": 0,
       "runway_extension_days": 0,
       "runway_extension_message": "...",
-      "action_required": "specific change",
-      "urgency": "immediate|this_week|this_month",
       "explanation": "..."
     }}
     """
@@ -115,16 +110,7 @@ def analyze_cost_impact(stack_profile: dict, change_description: str, burn_rate:
         return {"error": str(e)}
 
 def get_chat_response(stack_profile: dict, question: str) -> dict:
-    prompt = f"""
-    You are a technical advisor for this startup founder.
-    Their stack: {json.dumps(stack_profile)}
-    
-    Answer this question specifically for their setup:
-    {question}
-    
-    Be specific, practical, and brief. Max 3 sentences.
-    Return ONLY JSON: {{"answer": "...", "action": "specific next step or null"}}
-    """
+    prompt = f"Advisor Chat. Stack: {json.dumps(stack_profile)}. Question: {question}. Return JSON: {{\"answer\": \"...\", \"action\": \"...\"}}"
     try:
         response = client.models.generate_content(model=MODEL, contents=prompt)
         text = response.text.strip()
@@ -133,4 +119,4 @@ def get_chat_response(stack_profile: dict, question: str) -> dict:
             if text.startswith("json"): text = text[4:]
         return json.loads(text)
     except Exception as e:
-        return {"answer": f"Error: {str(e)}", "action": None}
+        return {"answer": str(e)}
