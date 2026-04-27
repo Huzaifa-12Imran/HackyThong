@@ -1,4 +1,4 @@
-import google.genai as genai
+from openai import OpenAI
 import os
 import json
 from ai.parser import parse_or_fallback
@@ -6,8 +6,11 @@ from ai.scanner import fetch_latest_ai_news
 from utils.calculator import RunwayCalculator
 from utils.cache import response_cache
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+)
+MODEL = os.getenv("AI_MODEL", "google/gemini-2.5-flash-preview")
 calc = RunwayCalculator()
 
 # ── Fallback responses (never let AI errors crash the demo) ──────────────
@@ -122,8 +125,11 @@ def generate_brief(stack_profile: dict, behavior_profile: dict = None) -> dict:
     """
 
     try:
-        response = client.models.generate_content(model=MODEL, contents=prompt)
-        parsed = parse_or_fallback(response.text, BRIEF_FALLBACK)
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        parsed = parse_or_fallback(response.choices[0].message.content, BRIEF_FALLBACK)
 
         # Python handles all the numbers — never Gemini
         if parsed != BRIEF_FALLBACK:
@@ -208,8 +214,11 @@ def analyze_cost_impact(stack_profile: dict, change_description: str,
     """
 
     try:
-        response = client.models.generate_content(model=MODEL, contents=prompt)
-        parsed = parse_or_fallback(response.text, COST_IMPACT_FALLBACK)
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        parsed = parse_or_fallback(response.choices[0].message.content, COST_IMPACT_FALLBACK)
 
         if parsed != COST_IMPACT_FALLBACK:
             monthly_saving = parsed.get('monthly_saving_hint', 0)
@@ -281,8 +290,11 @@ def generate_health_analysis(stack_profile: dict) -> dict:
     """
 
     try:
-        response = client.models.generate_content(model=MODEL, contents=prompt)
-        parsed = parse_or_fallback(response.text, HEALTH_FALLBACK)
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        parsed = parse_or_fallback(response.choices[0].message.content, HEALTH_FALLBACK)
         response_cache.set(cache_key, parsed)
         return parsed
     except Exception as e:
@@ -338,8 +350,11 @@ def get_chat_response(stack_profile: dict, question: str) -> dict:
     }
 
     try:
-        response = client.models.generate_content(model=MODEL, contents=prompt)
-        return parse_or_fallback(response.text, fallback)
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return parse_or_fallback(response.choices[0].message.content, fallback)
     except Exception as e:
         print(f"Gemini chat failed: {e}")
         return fallback
