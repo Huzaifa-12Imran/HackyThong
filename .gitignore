@@ -1,0 +1,10 @@
+.env
+push_to_github.py
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+node_modules/
+dist/
+build/
+.DS_Store
