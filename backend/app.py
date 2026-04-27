@@ -11,10 +11,14 @@ CORS(app)
 from routes.stack import stack_bp
 from routes.brief import brief_bp
 from routes.analyze import analyze_bp
+from routes.action import action_bp
+from routes.chat import chat_bp
 
 app.register_blueprint(stack_bp)
 app.register_blueprint(brief_bp)
 app.register_blueprint(analyze_bp)
+app.register_blueprint(action_bp)
+app.register_blueprint(chat_bp)
 
 @app.route('/health')
 def health():

@@ -18,10 +18,15 @@ def cost_impact():
         change = body.get('change', '')
         if not change:
             return error("Please provide a change description")
+            
         db = get_db()
         stack_doc = db.collection('stacks').document(founder_id).get()
-        stack_profile = stack_doc.to_dict() if stack_doc.exists else {}
-        result = analyze_cost_impact(stack_profile, change)
+        stack_data = stack_doc.to_dict() if stack_doc.exists else {}
+        
+        stack_profile = stack_data.get('stack', {})
+        burn_rate = stack_data.get('burn_rate', 0)
+        
+        result = analyze_cost_impact(stack_profile, change, burn_rate)
         return success(result)
     except Exception as e:
         return error(str(e))
