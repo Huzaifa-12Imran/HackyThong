@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StackPulse Pro | AI Technical Advisor</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg: #0a0a0c;
@@ -15,303 +18,310 @@
             --text: #f8fafc;
             --text-dim: #94a3b8;
             --accent: #10b981;
-            --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 2rem;
             background: radial-gradient(circle at top right, #1e1b4b, transparent),
-                        radial-gradient(circle at bottom left, #0f172a, transparent);
-            background-attachment: fixed;
+                radial-gradient(circle at bottom left, #0f172a, transparent);
+            color: var(--text);
+            padding: 2rem;
         }
 
-        .container { max-width: 1300px; margin: 0 auto; }
-        header { text-align: left; margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center; }
-        
-        h1 { font-size: 2.5rem; font-weight: 700; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .health-badge {
+        .container {
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
             background: var(--card-bg);
-            padding: 1rem 2rem;
-            border-radius: 1.25rem;
             border: 1px solid var(--border);
-            text-align: right;
+            border-radius: 1rem;
+            padding: 1.5rem;
         }
-        .health-score { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
 
-        .grid { display: grid; grid-template-columns: 350px 1fr 350px; gap: 1.5rem; }
-        .card { background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.5rem; height: fit-content; }
-        .span-2 { grid-column: span 2; }
-        .full { grid-column: span 3; }
-        
-        h2 { font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem; }
-        
-        input, textarea { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem; color: var(--text); font-family: inherit; margin-bottom: 1rem; }
-        button { width: 100%; background: var(--primary); color: white; border: none; border-radius: 0.75rem; padding: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        button:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        
-        .terminal { background: #000; border-radius: 0.75rem; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #00ff00; height: 150px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid #333; }
-        .terminal-line { margin-bottom: 0.2rem; }
+        .grid {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            gap: 1rem;
+        }
 
-        .runway-viz { background: rgba(255,255,255,0.05); height: 12px; border-radius: 6px; overflow: hidden; margin: 1rem 0; position: relative; }
-        .runway-bar { height: 100%; background: var(--accent); width: 40%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .runway-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); }
+        input,
+        textarea {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: .6rem;
+            border-radius: .5rem;
+            margin-bottom: .8rem;
+        }
 
-        .action-card { background: rgba(255, 255, 255, 0.05); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.5rem; border: 1px solid var(--border); transition: all 0.3s; }
-        .action-card:hover { border-color: var(--primary); }
-        .code-snippet { background: #111; padding: 1rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.8rem; margin-top: 1rem; color: #818cf8; overflow-x: auto; border: 1px solid #222; position: relative; }
-        .code-snippet::before { content: "RECOMMENDED FIX"; position: absolute; top: 0; right: 10px; font-size: 0.6rem; color: #444; }
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: .6rem;
+            border-radius: .5rem;
+            cursor: pointer;
+        }
 
-        .chat-msg { margin-bottom: 1rem; padding: 0.75rem; border-radius: 0.75rem; max-width: 85%; font-size: 0.9rem; }
-        .user-msg { background: var(--primary); margin-left: auto; color: white; }
-        .ai-msg { background: var(--card-bg); border: 1px solid var(--border); }
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        .terminal {
+            background: #000;
+            height: 150px;
+            overflow: auto;
+            padding: 1rem;
+            font-family: monospace;
+            color: #00ff00;
+        }
+
+        .chat-msg {
+            padding: .6rem;
+            margin-bottom: .5rem;
+            border-radius: .5rem;
+        }
+
+        .user-msg {
+            background: var(--primary);
+            margin-left: auto;
+        }
+
+        .ai-msg {
+            background: #111;
+        }
+
+        .runway-bar {
+            height: 10px;
+            background: var(--accent);
+            width: 40%;
+        }
     </style>
 </head>
+
 <body>
+
     <div class="container">
+
         <header>
             <div>
-                <h1 id="main-title">StackPulse <span style="font-weight: 300; opacity: 0.6;">Intelligence</span></h1>
-                <p style="color: var(--text-dim); font-size: 0.9rem;">Founder: <span id="display-founder">demo-founder-001</span> | Target: sam_hackathon_persona</p>
+                <h1>StackPulse</h1>
+                <p id="display-founder">demo-founder-001</p>
             </div>
-            <div class="health-badge">
-                <div class="health-score" id="health-score">--</div>
-                <div id="health-label" style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Stack Health Score</div>
+
+            <div>
+                <div id="health-score">--</div>
+                <small>Health Score</small>
             </div>
         </header>
 
         <div class="grid">
-            <!-- Sidebar: Config -->
-            <div class="card">
-                <h2>🛠️ Project Context</h2>
-                <input type="text" id="founder-id" value="demo-founder-001" placeholder="Founder ID">
-                <label style="font-size: 0.7rem; color: var(--text-dim);">MONTHLY BURN ($)</label>
-                <input type="number" id="burn-rate" value="8000">
-                <label style="font-size: 0.7rem; color: var(--text-dim);">TECH STACK</label>
-                <textarea id="stack-json" rows="14">{
-  "models": [
-    {"name": "gemini-2.5-flash", "monthly_cost": 420},
-    {"name": "text-embedding-004", "monthly_cost": 80}
-  ],
-  "infrastructure": [
-    {"name": "Cloud Run", "monthly_cost": 340},
-    {"name": "Firebase Firestore", "monthly_cost": 60}
-  ],
-  "saas_tools": [
-    {"name": "Pinecone", "monthly_cost": 200},
-    {"name": "Resend", "monthly_cost": 50}
-  ]
-}</textarea>
-                <button id="btn-register">Sync Strategy</button>
 
-                <div style="margin-top: 2rem;">
-                    <h2>📈 Survival Runway</h2>
-                    <div class="runway-viz"><div id="runway-bar" class="runway-bar"></div></div>
-                    <div class="runway-labels">
-                        <span>Today</span>
-                        <span id="runway-days">-- Days</span>
-                    </div>
-                </div>
+            <!-- LEFT -->
+            <div class="card">
+                <h3>Project Context</h3>
+
+                <input id="founder-id" value="demo-founder-001">
+
+                <input id="burn-rate" type="number" value="8000">
+
+                <textarea id="stack-json" rows="8">{}</textarea>
+
+                <button id="btn-register">Sync</button>
+
+                <h4>Runway</h4>
+                <div class="runway-bar" id="runway-bar"></div>
+                <p id="runway-days">120 Days</p>
             </div>
 
-            <!-- Main: Intelligence -->
+            <!-- CENTER -->
             <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>📡 Live Pulse Monitor</h2>
-                    <button id="btn-brief" style="width: auto; padding: 0.5rem 1.25rem; font-size: 0.8rem; background: linear-gradient(to right, #6366f1, #c084fc);">Run Ecosystem Scan</button>
-                </div>
-                
-                <div id="terminal" class="terminal">
-                    <div class="terminal-line">> System Idle. Ready for ecosystem scan...</div>
-                </div>
+                <button id="btn-brief">Run Scan</button>
 
-                <div id="brief-content">
-                    <div style="text-align: center; color: var(--text-dim); margin-top: 50px;">
-                        <p>No active briefings.</p>
-                        <p style="font-size: 0.8rem;">Click "Run Ecosystem Scan" to process live signals.</p>
-                    </div>
-                </div>
+                <div id="terminal" class="terminal"></div>
+
+                <div id="brief-content"></div>
             </div>
 
-            <!-- Right: Chat & Impact -->
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- RIGHT -->
+            <div>
                 <div class="card">
-                    <h2>💬 Advisor Chat</h2>
-                    <div id="chat-window" style="height: 200px; overflow-y: auto; margin-bottom: 1rem; padding-right: 5px;">
-                        <div class="chat-msg ai-msg">Sam, how can I help with your stack today?</div>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="chat-input" placeholder="Ask advisor..." style="margin-bottom:0; font-size: 0.8rem;">
-                        <button id="btn-chat" style="width: auto; padding: 0 1rem;">→</button>
-                    </div>
+                    <h3>Chat</h3>
+
+                    <div id="chat-window" style="height:150px;overflow:auto"></div>
+
+                    <input id="chat-input">
+                    <button id="btn-chat">Send</button>
                 </div>
 
                 <div class="card">
-                    <h2>💸 Impact Simulator</h2>
-                    <textarea id="change-desc" rows="2" placeholder="e.g. Gemini pricing cut 50%" style="font-size: 0.8rem;"></textarea>
-                    <button id="btn-analyze" style="background: var(--accent); font-size: 0.8rem;">Run Simulation</button>
-                    <div id="analyze-result" style="margin-top: 1rem;"></div>
+                    <textarea id="change-desc"></textarea>
+                    <button id="btn-analyze">Simulate</button>
+                    <div id="analyze-result"></div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
         const API_BASE = "http://localhost:8080";
-        let currentRunway = 120; // Default days
+        let baseRunway = 120;
 
-        function log(msg, color="#00ff00") {
-            const term = document.getElementById('terminal');
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.style.color = color;
-            line.innerText = `> ${msg}`;
-            term.appendChild(line);
-            term.scrollTop = term.scrollHeight;
+        function log(msg, color = "#0f0") {
+            const t = document.getElementById("terminal");
+            const d = document.createElement("div");
+            d.style.color = color;
+            d.textContent = "> " + msg;
+            t.appendChild(d);
+            t.scrollTop = t.scrollHeight;
         }
 
-        async function api(path, method = 'GET', body = null) {
+        async function api(path, method = "GET", body = null) {
             try {
-                const res = await fetch(`${API_BASE}${path}`, {
+                const res = await fetch(API_BASE + path, {
                     method,
                     headers: { 'Content-Type': 'application/json' },
                     body: body ? JSON.stringify(body) : null
                 });
+
+                if (!res.ok) throw new Error("Server error");
                 return await res.json();
-            } catch (err) { return { success: false, message: err.message }; }
-        }
 
-        async function refreshHealth() {
-            const id = document.getElementById('founder-id').value;
-            const res = await api(`/stack/health/${id}`);
-            if (res.success) {
-                document.getElementById('health-score').innerText = res.data.score;
-                log(`Health Scan: ${res.data.grade} Score. Risk: ${res.data.top_risk}`, "#818cf8");
+            } catch (e) {
+                log("API Error: " + e.message, "red");
+                return { success: false };
             }
         }
 
-        document.getElementById('btn-register').addEventListener('click', async () => {
-            log("Syncing project context with Firestore...");
-            const id = document.getElementById('founder-id').value;
-            const burn = parseFloat(document.getElementById('burn-rate').value);
-            const stack = JSON.parse(document.getElementById('stack-json').value);
-            const res = await api('/stack/register', 'POST', { founder_id: id, stack, burn_rate: burn });
-            if (res.success) {
-                log("Strategy synchronized successfully.", "#10b981");
-                refreshHealth();
+        /* -------- SAFE JSON -------- */
+        function getStackJSON() {
+            try {
+                return JSON.parse(document.getElementById("stack-json").value);
+            } catch {
+                log("Invalid JSON in stack input", "red");
+                return null;
             }
-        });
+        }
 
-        document.getElementById('btn-brief').addEventListener('click', async () => {
-            const container = document.getElementById('brief-content');
-            const id = document.getElementById('founder-id').value;
-            
-            log("Accessing Hacker News RSS...");
-            log("Crawling Reddit r/MachineLearning...");
-            log("Parsing Google Cloud Release Notes...");
-            
-            const res = await api('/brief/generate', 'POST', { founder_id: id });
+        /* -------- REGISTER -------- */
+        document.getElementById("btn-register").onclick = async () => {
+            const id = document.getElementById("founder-id").value;
+            const burn = parseFloat(document.getElementById("burn-rate").value);
+            const stack = getStackJSON();
+
+            if (!id || !stack) return;
+
+            log("Syncing...");
+
+            const res = await api("/stack/register", "POST", { founder_id: id, stack, burn_rate: burn });
+
             if (res.success) {
-                log(`Ecosystem Scan Complete. Found ${res.data.raw_logs.length} signals.`, "#10b981");
-                res.data.raw_logs.forEach(title => log(`Detected: ${title.substring(0, 50)}...`, "#666"));
-                
-                container.innerHTML = `<div style="margin: 1.5rem 0; padding: 1rem; border-radius: 0.75rem; background: rgba(16, 185, 129, 0.1); color: var(--accent); border: 1px solid var(--accent);"><strong>AI Summary:</strong> ${res.data.summary}</div>`;
-                
-                if (res.data.memory_insight) {
-                    container.innerHTML += `<div style="margin-bottom: 1.5rem; padding: 0.75rem 1rem; border-radius: 0.5rem; background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px dashed #818cf8; font-size: 0.85rem;"><strong>🧠 Memory Insight:</strong> ${res.data.memory_insight}</div>`;
-                }
-                
-                res.data.actions.forEach((a, idx) => {
-                    // Generate a fake action ID if none provided
-                    const actionId = a.id || `action-${Date.now()}-${idx}`;
-                    const card = document.createElement('div');
-                    card.className = 'action-card';
-                    card.id = `card-${actionId}`;
-                    card.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <span style="font-size: 0.6rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">${a.type}</span>
-                            <span style="font-size: 0.7rem; background: var(--border); padding: 2px 8px; border-radius: 4px;">Effort: ${a.effort || 'N/A'}</span>
-                        </div>
-                        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">${a.title}</div>
-                        <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">${a.details}</p>
-                        <div style="background: rgba(99, 102, 241, 0.1); padding: 0.5rem; border-radius: 0.5rem; font-weight: 600; color: var(--primary); font-size: 0.8rem;">
-                            Impact: ${a.impact || 'N/A'}
-                        </div>
-                        <div class="code-snippet">${a.code_fix || 'No code fix provided.'}</div>
-                        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                            <button onclick="handleAction('${actionId}', '${a.type}', 'completed')" style="padding: 0.5rem; font-size: 0.75rem; background: var(--accent);">Mark Done</button>
-                            <button onclick="handleAction('${actionId}', '${a.type}', 'ignored')" style="padding: 0.5rem; font-size: 0.75rem; background: transparent; border: 1px solid var(--border); color: var(--text-dim);">Ignore</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
+                log("Synced ✔", "#0f0");
+                document.getElementById("display-founder").textContent = id;
             }
-        });
+        };
 
-        async function handleAction(actionId, type, status) {
-            const id = document.getElementById('founder-id').value;
-            const res = await api('/action/update', 'POST', {
-                founder_id: id,
-                action_id: actionId,
-                action_type: type,
-                status: status
+        /* -------- BRIEF -------- */
+        document.getElementById("btn-brief").onclick = async () => {
+            const container = document.getElementById("brief-content");
+            container.innerHTML = "";
+
+            log("Scanning ecosystem...");
+
+            const res = await api("/brief/generate", "POST", { founder_id: document.getElementById("founder-id").value });
+
+            if (!res.success) return;
+
+            container.innerHTML = `<p>${res.data.summary}</p>`;
+
+            res.data.actions.forEach((a, i) => {
+                const div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+        <b>${a.title}</b>
+        <p>${a.details}</p>
+        <button onclick="handleAction('${i}','done')">Done</button>
+        `;
+                container.appendChild(div);
             });
-            if (res.success) {
-                const card = document.getElementById(\`card-\${actionId}\`);
-                if (card) {
-                    card.style.opacity = '0.5';
-                    card.style.pointerEvents = 'none';
-                    card.querySelector('button').innerText = status === 'completed' ? 'Completed ✅' : 'Ignored ❌';
-                }
-                log(\`Action \${status} recorded in Memory Engine.\`, "#818cf8");
-            }
+        };
+
+        /* -------- ACTION -------- */
+        async function handleAction(id, status) {
+            log("Action " + status, "#818cf8");
         }
 
-        document.getElementById('btn-chat').addEventListener('click', async () => {
-            const input = document.getElementById('chat-input');
-            const win = document.getElementById('chat-window');
-            const q = input.value;
-            if(!q) return;
-            
-            win.innerHTML += `<div class="chat-msg user-msg">${q}</div>`;
+        /* -------- CHAT -------- */
+        document.getElementById("btn-chat").onclick = sendChat;
+
+        document.getElementById("chat-input").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendChat();
+        });
+
+        async function sendChat() {
+            const input = document.getElementById("chat-input");
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const win = document.getElementById("chat-window");
+
+            win.innerHTML += `<div class="chat-msg user-msg">${msg}</div>`;
             input.value = "";
-            const res = await api('/chat', 'POST', { question: q, founder_id: document.getElementById('founder-id').value });
-            if(res.success) {
+
+            const res = await api("/chat", "POST", { question: msg });
+
+            if (res.success) {
                 win.innerHTML += `<div class="chat-msg ai-msg">${res.data.answer}</div>`;
             }
-            win.scrollTop = win.scrollHeight;
-        });
 
-        document.getElementById('btn-analyze').addEventListener('click', async () => {
-            const resBox = document.getElementById('analyze-result');
-            const res = await api('/analyze/cost-impact', 'POST', { 
-                founder_id: document.getElementById('founder-id').value,
-                change: document.getElementById('change-desc').value
-            });
+            win.scrollTop = win.scrollHeight;
+        }
+
+        /* -------- SIMULATION -------- */
+        document.getElementById("btn-analyze").onclick = async () => {
+            const desc = document.getElementById("change-desc").value;
+            if (!desc) return;
+
+            const res = await api("/analyze/cost-impact", "POST", { change: desc });
+
             if (res.success) {
                 const d = res.data;
-                log(`Cost Simulation: Saved $${d.monthly_saving}/mo. Extending runway by ${d.runway_extension_days} days.`, "#10b981");
-                resBox.innerHTML = `
-                    <div style="font-size: 1.2rem; font-weight: 800; color: var(--accent);">$${d.monthly_saving} Monthly Saving</div>
-                    <div style="color: var(--text-dim); font-size: 0.8rem;">${d.explanation}</div>
-                `;
-                
-                // Update Runway UI
-                const newRunway = 120 + d.runway_extension_days;
-                document.getElementById('runway-days').innerText = `${newRunway} Days`;
-                document.getElementById('runway-bar').style.width = '75%';
-            }
-        });
 
-        // Initial UI State
-        document.getElementById('runway-days').innerText = `120 Days`;
-        document.getElementById('runway-bar').style.width = '40%';
+                const newRunway = baseRunway + (d.runway_extension_days || 0);
+
+                document.getElementById("runway-days").textContent = newRunway + " Days";
+                document.getElementById("runway-bar").style.width = Math.min(100, newRunway / 2) + "%";
+
+                document.getElementById("analyze-result").innerHTML =
+                    `<b>$${d.monthly_saving}</b> saved`;
+            }
+        };
     </script>
+
 </body>
+
 </html>
