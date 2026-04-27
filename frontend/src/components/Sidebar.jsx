@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { apiCall } from "../utils/api";
 
 const navItems = [
   { icon: "layers", label: "Stack Setup", page: "setup" },
@@ -9,6 +10,28 @@ const navItems = [
 ];
 
 export default function Sidebar({ currentPage, onNavigate }) {
+  const [systemStatus, setSystemStatus] = useState("live"); // 'live', 'offline'
+
+  useEffect(() => {
+    // Poll backend health every 15 seconds
+    const checkHealth = async () => {
+      try {
+        const res = await apiCall("/health", {}, "GET");
+        if (res.success) {
+          setSystemStatus("live");
+        } else {
+          setSystemStatus("offline");
+        }
+      } catch (err) {
+        setSystemStatus("offline");
+      }
+    };
+
+    checkHealth(); // Initial check
+    const interval = setInterval(checkHealth, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-bg-sidebar border-r border-border-dark flex flex-col p-3 z-50">
       {/* Ambient top glow */}
@@ -78,20 +101,34 @@ export default function Sidebar({ currentPage, onNavigate }) {
               System
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse" />
-              <span className="text-[10px] text-accent-green font-semibold">Live</span>
+              <span 
+                className={`w-1.5 h-1.5 rounded-full ${
+                  systemStatus === "live" ? "bg-accent-green animate-pulse" : "bg-red-500 animate-pulse"
+                }`} 
+              />
+              <span 
+                className={`text-[10px] font-semibold ${
+                  systemStatus === "live" ? "text-accent-green" : "text-red-500"
+                }`}
+              >
+                {systemStatus === "live" ? "Live" : "Offline"}
+              </span>
             </span>
           </div>
           <div className="w-full bg-border-dark h-1 rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full"
+              className={`h-full rounded-full transition-all duration-1000 ${
+                systemStatus === "live" ? "" : "w-0"
+              }`}
               style={{
-                width: "99%",
-                background: "linear-gradient(90deg, #10b981, #06b6d4)",
+                width: systemStatus === "live" ? "99%" : "0%",
+                background: systemStatus === "live" ? "linear-gradient(90deg, #10b981, #06b6d4)" : "#ef4444",
               }}
             />
           </div>
-          <p className="text-[10px] text-text-muted mt-1.5">99.9% uptime · AI feeds active</p>
+          <p className="text-[10px] text-text-muted mt-1.5">
+            {systemStatus === "live" ? "99.9% uptime · AI feeds active" : "Connection to backend lost"}
+          </p>
         </div>
       </div>
     </aside>

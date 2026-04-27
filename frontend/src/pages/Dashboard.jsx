@@ -34,6 +34,7 @@ const URGENCY_CONFIG = {
 export default function Dashboard({ onViewFix, onGenerating, onDoneGenerating }) {
   const [brief, setBrief] = useState(null);
   const [initialCost, setInitialCost] = useState(1150);
+  const [burnRate, setBurnRate] = useState(18000);
   const [loading, setLoading] = useState(false);
   const [memoryExpanded, setMemoryExpanded] = useState(false);
   const [doneActions, setDoneActions] = useState([]);
@@ -42,8 +43,13 @@ export default function Dashboard({ onViewFix, onGenerating, onDoneGenerating })
     // Fetch initial stack data so the cost is accurate before brief generation
     apiCall("/stack/demo-founder-001", {}, "GET")
       .then(res => {
-        if (res.success && res.data && res.data.stack) {
-          setInitialCost(res.data.stack.total_monthly_cost || 1150);
+        if (res.success && res.data) {
+          if (res.data.stack) {
+            setInitialCost(res.data.stack.total_monthly_cost || 1150);
+          }
+          if (res.data.burn_rate) {
+            setBurnRate(res.data.burn_rate);
+          }
         }
       })
       .catch(e => console.error("Failed to load initial stack data:", e));
@@ -80,6 +86,10 @@ export default function Dashboard({ onViewFix, onGenerating, onDoneGenerating })
       : score >= 65
       ? "from-accent-amber to-yellow-400"
       : "from-accent-red to-orange-500";
+
+  const currentCost = brief && brief.total_monthly_cost ? brief.total_monthly_cost : initialCost;
+  const isUnderBudget = currentCost <= burnRate;
+  const budgetDiffPercent = burnRate > 0 ? Math.round(Math.abs(burnRate - currentCost) / burnRate * 100) : 0;
 
   return (
     <div className="max-w-4xl mx-auto animate-fadeInUp">
@@ -151,18 +161,18 @@ export default function Dashboard({ onViewFix, onGenerating, onDoneGenerating })
           </p>
           <div className="flex items-baseline gap-1">
             <span className="text-5xl font-black text-text-primary">
-              ${brief && brief.total_monthly_cost ? brief.total_monthly_cost.toLocaleString() : initialCost.toLocaleString()}
+              ${currentCost.toLocaleString()}
             </span>
             <span className="text-sm text-text-muted">/mo</span>
           </div>
-          <div className="mt-3 flex items-center text-xs text-accent-green font-bold">
+          <div className={`mt-3 flex items-center text-xs font-bold ${isUnderBudget ? 'text-accent-green' : 'text-accent-red'}`}>
             <span
               className="material-symbols-outlined mr-1"
               style={{ fontSize: 14 }}
             >
-              trending_down
+              {isUnderBudget ? 'trending_down' : 'trending_up'}
             </span>
-            4% under budget
+            {budgetDiffPercent}% {isUnderBudget ? 'under' : 'over'} budget
           </div>
         </div>
 
