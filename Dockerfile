@@ -1,6 +1,9 @@
 FROM python:3.11-slim
 WORKDIR /app
-COPY . .
-RUN pip install google-genai firebase-admin flask python-dotenv requests flask-cors
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY .env .env
+COPY backend/ ./backend/
+WORKDIR /app/backend
 EXPOSE 8080
-CMD ["python", "backend/app.py"]
+CMD ["python", "app.py"]
