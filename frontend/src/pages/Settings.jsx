@@ -36,7 +36,7 @@ const SETTINGS_SECTIONS = [
         label: "Backend URL",
         description: "Flask API endpoint",
         type: "badge",
-        value: "http://localhost:8080",
+        value: "https://stackpulse-backend-977549320612.us-central1.run.app",
       },
       {
         label: "Demo Cache Endpoints",
@@ -176,7 +176,7 @@ export default function Settings() {
           <div className="p-5 space-y-3">
             {[
               { label: "Start backend", cmd: "cd backend && python app.py" },
-              { label: "Seed demo data", cmd: "POST http://localhost:8080/seed-demo" },
+              { label: "Seed demo data", cmd: "POST https://stackpulse-backend-977549320612.us-central1.run.app/seed-demo" },
               { label: "Start frontend", cmd: "cd frontend && npm start" },
               { label: "Deploy backend", cmd: "gcloud run deploy stackpulse-backend --source . --region us-central1 --allow-unauthenticated" },
             ].map((c) => (
