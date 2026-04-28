@@ -7,8 +7,8 @@ module.exports = {
         primary: "#3b5bdb",
         "primary-dark": "#3451c7",
         "primary-bright": "#4c6ef5",
-        "accent-purple": "#7048e8",
-        "accent-purple-bright": "#845ef7",
+        "accent-purple": "#3b5bdb",
+        "accent-purple-bright": "#4c6ef5",
         "accent-cyan": "#0c8599",
         "accent-cyan-bright": "#1098ad",
         "accent-red": "#c92a2a",
@@ -36,7 +36,7 @@ module.exports = {
           "50%": { opacity: 0.7 },
         },
         fadeInUp: {
-          "0%": { opacity: 0, transform: "translateY(10px)" },
+          "0%": { opacity: 0, transform: "translateY(14px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
         slideInRight: {
@@ -53,7 +53,7 @@ module.exports = {
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-3px)" },
+          "50%": { transform: "translateY(-4px)" },
         },
         barGrow: {
           "0%": { width: "0%" },
@@ -65,7 +65,7 @@ module.exports = {
       },
       animation: {
         pulse_glow: "pulse_glow 2s ease-in-out infinite",
-        fadeInUp: "fadeInUp 0.35s ease forwards",
+        fadeInUp: "fadeInUp 0.4s ease forwards",
         slideInRight: "slideInRight 0.38s cubic-bezier(0.16,1,0.3,1) forwards",
         blink: "blink 1s step-end infinite",
         shimmer: "shimmer 2s linear infinite",
@@ -75,14 +75,14 @@ module.exports = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-green-cyan": "linear-gradient(135deg, #3b5bdb 0%, #4c6ef5 100%)",
-        "gradient-purple-cyan": "linear-gradient(135deg, #7048e8 0%, #0c8599 100%)",
+        "gradient-purple-cyan": "linear-gradient(135deg, #3b5bdb 0%, #0c8599 100%)",
       },
       boxShadow: {
-        "glow-green": "0 0 0 2px rgba(47,158,68,0.2)",
-        "glow-purple": "0 0 0 2px rgba(59,91,219,0.2)",
-        "glow-cyan": "0 0 0 2px rgba(12,133,153,0.2)",
-        "glow-amber": "0 0 0 2px rgba(230,119,0,0.2)",
-        "card-dark": "0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04)",
+        "glow-green":  "0 0 0 3px rgba(47,158,68,0.15)",
+        "glow-purple": "0 0 0 3px rgba(59,91,219,0.15)",
+        "glow-cyan":   "0 0 0 3px rgba(12,133,153,0.15)",
+        "glow-amber":  "0 0 0 3px rgba(230,119,0,0.15)",
+        "card-dark":   "0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04)",
       },
     },
   },
