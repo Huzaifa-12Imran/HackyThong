@@ -8,7 +8,7 @@ from utils.calculator import RunwayCalculator
 from utils.cache import response_cache
 
 client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=os.getenv("OPENROUTER_API_KEY", "dummy_key_to_prevent_startup_crash"),
     base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
 )
 MODEL = os.getenv("AI_MODEL", "google/gemini-2.5-flash")

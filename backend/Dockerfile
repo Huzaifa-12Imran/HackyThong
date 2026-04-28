@@ -13,5 +13,5 @@ COPY . .
 # Expose port 8080 (Cloud Run requirement)
 EXPOSE 8080
 
-# Run the Flask application
-CMD ["python", "app.py"]
+# Run the Flask application using Gunicorn
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
