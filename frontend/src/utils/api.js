@@ -7,7 +7,7 @@ const DEMO_MODE = false;
 
 // Update this to your Cloud Run URL after deployment
 // e.g. "https://stackpulse-backend-xxxxx-uc.a.run.app"
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080";
+const API_BASE = process.env.REACT_APP_API_BASE || "https://stackpulse-backend-977549320612.us-central1.run.app";
 
 // Pre-cached perfect responses (used only when backend is unreachable)
 const DEMO_CACHE = {
