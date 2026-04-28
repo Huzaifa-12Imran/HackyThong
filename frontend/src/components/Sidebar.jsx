@@ -5,6 +5,8 @@ const navItems = [
   { icon: "layers", label: "Stack Setup", page: "setup" },
   { icon: "dashboard", label: "Dashboard", page: "dashboard" },
   { icon: "analytics", label: "Impact Analyzer", page: "analyzer" },
+  { icon: "policy", label: "Reality Check", page: "reality" },
+  { icon: "search", label: "Margin Spy", page: "margin" },
   { icon: "monitoring", label: "Live Pulse", page: "terminal" },
   { icon: "settings", label: "Settings", page: "settings" },
 ];

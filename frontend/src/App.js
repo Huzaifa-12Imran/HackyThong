@@ -7,6 +7,8 @@ import RunwayAnalyzer from "./pages/RunwayAnalyzer";
 import LiveTerminal from "./pages/LiveTerminal";
 import FixPanel from "./pages/FixPanel";
 import Settings from "./pages/Settings";
+import RealityCheck from "./pages/RealityCheck";
+import MarginSpy from "./pages/MarginSpy";
 import { TERMINAL_LINES } from "./data/demoData";
 
 export default function App() {
@@ -27,6 +29,8 @@ export default function App() {
     dashboard: "Morning Briefing",
     analyzer: "Runway Analyzer",
     terminal: "Live Pulse",
+    reality: "Reality Check Engine",
+    margin: "Margin Spy",
     settings: "Settings",
   };
 
@@ -48,6 +52,8 @@ export default function App() {
           )}
           {page === "analyzer" && <RunwayAnalyzer />}
           {page === "terminal" && <LiveTerminalPage />}
+          {page === "reality" && <RealityCheck />}
+          {page === "margin" && <MarginSpy />}
           {page === "settings" && <Settings />}
         </main>
       </div>
