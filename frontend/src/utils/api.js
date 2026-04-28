@@ -23,6 +23,19 @@ const DEMO_CACHE = {
     delay: 1200,
     response: { success: true, data: { stack_id: "demo-stack-001" } },
   },
+  "/features/margin-spy": {
+    delay: 2500,
+    response: {
+      success: true,
+      data: {
+        inferredStack: "GPT-4o, AWS Lambda, DynamoDB, Pinecone ($1,800/mo)",
+        userStack: "Gemini 2.5 Flash, Cloud Run, Firebase ($1,150/mo)",
+        insight: "Your competitor is likely running a 57% higher infrastructure cost using AWS + OpenAI. Gemini 2.5 Flash gives you equivalent intelligence at a fraction of the cost, giving you a structural margin advantage that compounds as you scale.",
+        advantage: "High",
+        marginDelta: "~36%"
+      }
+    }
+  },
 };
 
 function sleep(ms) {
