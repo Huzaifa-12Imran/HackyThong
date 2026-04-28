@@ -2,50 +2,50 @@ import React from "react";
 
 export default function TopBar({ title }) {
   const now = new Date();
-  const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   const dateStr = now.toLocaleDateString([], {
-    weekday: "short",
-    month: "short",
+    weekday: "long",
+    month: "long",
     day: "numeric",
+    year: "numeric",
   });
 
   return (
-    <header className="sticky top-0 z-40 bg-bg-secondary border-b border-border-dark flex items-center justify-between px-8 h-14">
-      {/* Left: page title */}
+    <header className="sticky top-0 z-40 bg-white border-b border-border-dark flex items-center justify-between px-8 h-14">
+      {/* Left: page title + date */}
       <div className="flex items-center gap-3">
-        <div className="w-px h-5 bg-gradient-to-b from-accent-green to-transparent rounded-full" />
-        <h2 className="text-sm font-bold text-text-primary">{title}</h2>
+        <h2 className="text-base font-semibold text-text-primary">{title}</h2>
+        <span className="text-border-bright">|</span>
+        <span className="flex items-center gap-1.5 text-xs text-text-muted">
+          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
+            calendar_today
+          </span>
+          {dateStr}
+        </span>
       </div>
 
-      {/* Right: meta info */}
-      <div className="flex items-center gap-5">
-        {/* Demo badge */}
-        <div className="flex items-center gap-1.5 bg-accent-purple bg-opacity-15 border border-accent-purple border-opacity-25 text-accent-purple-bright text-[10px] font-bold px-2.5 py-1 rounded-full">
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: 11, fontVariationSettings: "'FILL' 1" }}
-          >
-            psychology
+      {/* Right: search + icons + avatar */}
+      <div className="flex items-center gap-4">
+        {/* Search bar */}
+        <div className="flex items-center gap-2 bg-bg-base border border-border-dark rounded-lg px-3 py-1.5 w-44">
+          <span className="material-symbols-outlined text-text-muted" style={{ fontSize: 15 }}>
+            search
           </span>
-          AI ACTIVE
+          <span className="text-xs text-text-muted">Search insights...</span>
         </div>
 
-        {/* Sam's context */}
-        <div className="flex items-center gap-2 text-xs text-text-muted">
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: 14, fontVariationSettings: "'FILL' 1" }}
-          >
-            account_circle
-          </span>
-          <span className="font-medium text-text-secondary">Sam</span>
-          <span className="text-border-bright">·</span>
-          <span>demo-founder-001</span>
-        </div>
+        {/* Notification */}
+        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-bg-card-hover transition-colors text-text-muted">
+          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>notifications</span>
+        </button>
 
-        {/* Time */}
-        <div className="text-xs text-text-muted font-mono">
-          {dateStr} · {timeStr}
+        {/* Help */}
+        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-bg-card-hover transition-colors text-text-muted">
+          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>help_outline</span>
+        </button>
+
+        {/* Avatar */}
+        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
+          S
         </div>
       </div>
     </header>

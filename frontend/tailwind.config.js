@@ -4,25 +4,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#10b981",
-        "primary-dark": "#059669",
-        "primary-bright": "#34d399",
-        "accent-purple": "#6366f1",
-        "accent-purple-bright": "#818cf8",
-        "accent-cyan": "#06b6d4",
-        "accent-cyan-bright": "#22d3ee",
-        "accent-red": "#ef4444",
-        "accent-amber": "#f59e0b",
-        "bg-base": "#07080f",
-        "bg-secondary": "#0d0f1c",
-        "bg-card": "#111827",
-        "bg-card-hover": "#161d2e",
-        "bg-sidebar": "#0a0c18",
-        "text-primary": "#f1f5f9",
-        "text-secondary": "#94a3b8",
-        "text-muted": "#475569",
-        "border-dark": "#1e2a3b",
-        "border-bright": "#2d3f55",
+        primary: "#3b5bdb",
+        "primary-dark": "#3451c7",
+        "primary-bright": "#4c6ef5",
+        "accent-purple": "#7048e8",
+        "accent-purple-bright": "#845ef7",
+        "accent-cyan": "#0c8599",
+        "accent-cyan-bright": "#1098ad",
+        "accent-red": "#c92a2a",
+        "accent-amber": "#e67700",
+        "accent-green": "#2f9e44",
+        "accent-green-bright": "#37b24d",
+        "bg-base": "#f8f9fa",
+        "bg-secondary": "#ffffff",
+        "bg-card": "#ffffff",
+        "bg-card-hover": "#f1f5f9",
+        "bg-sidebar": "#ffffff",
+        "text-primary": "#1a1b1e",
+        "text-secondary": "#495057",
+        "text-muted": "#868e96",
+        "border-dark": "#dee2e6",
+        "border-bright": "#ced4da",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
@@ -30,11 +32,11 @@ module.exports = {
       },
       keyframes: {
         pulse_glow: {
-          "0%, 100%": { boxShadow: "0 0 8px 2px rgba(16,185,129,0.2)" },
-          "50%": { boxShadow: "0 0 28px 8px rgba(16,185,129,0.45)" },
+          "0%, 100%": { opacity: 1 },
+          "50%": { opacity: 0.7 },
         },
         fadeInUp: {
-          "0%": { opacity: 0, transform: "translateY(14px)" },
+          "0%": { opacity: 0, transform: "translateY(10px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
         },
         slideInRight: {
@@ -51,7 +53,7 @@ module.exports = {
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-4px)" },
+          "50%": { transform: "translateY(-3px)" },
         },
         barGrow: {
           "0%": { width: "0%" },
@@ -63,7 +65,7 @@ module.exports = {
       },
       animation: {
         pulse_glow: "pulse_glow 2s ease-in-out infinite",
-        fadeInUp: "fadeInUp 0.4s ease forwards",
+        fadeInUp: "fadeInUp 0.35s ease forwards",
         slideInRight: "slideInRight 0.38s cubic-bezier(0.16,1,0.3,1) forwards",
         blink: "blink 1s step-end infinite",
         shimmer: "shimmer 2s linear infinite",
@@ -72,16 +74,15 @@ module.exports = {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-green-cyan":
-          "linear-gradient(135deg, #10b981 0%, #06b6d4 100%)",
-        "gradient-purple-cyan":
-          "linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)",
+        "gradient-green-cyan": "linear-gradient(135deg, #3b5bdb 0%, #4c6ef5 100%)",
+        "gradient-purple-cyan": "linear-gradient(135deg, #7048e8 0%, #0c8599 100%)",
       },
       boxShadow: {
-        "glow-green": "0 0 20px rgba(16,185,129,0.3)",
-        "glow-purple": "0 0 20px rgba(99,102,241,0.3)",
-        "glow-cyan": "0 0 20px rgba(6,182,212,0.3)",
-        "card-dark": "0 4px 24px rgba(0,0,0,0.4)",
+        "glow-green": "0 0 0 2px rgba(47,158,68,0.2)",
+        "glow-purple": "0 0 0 2px rgba(59,91,219,0.2)",
+        "glow-cyan": "0 0 0 2px rgba(12,133,153,0.2)",
+        "glow-amber": "0 0 0 2px rgba(230,119,0,0.2)",
+        "card-dark": "0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04)",
       },
     },
   },

@@ -43,7 +43,7 @@ export default function App() {
   return (
     <div className="min-h-screen ambient-bg">
       <Sidebar currentPage={page} onNavigate={setPage} />
-      <div className="ml-60 flex flex-col min-h-screen">
+      <div className="ml-56 flex flex-col min-h-screen">
         <TopBar title={PAGE_TITLES[page]} />
         <main className="flex-1 p-8">
           {page === "setup" && (
