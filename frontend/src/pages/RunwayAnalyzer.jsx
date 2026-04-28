@@ -262,21 +262,36 @@ export default function RunwayAnalyzer() {
 
           {/* Action tray */}
           <div className="flex justify-center gap-6 text-text-muted py-2 border-t border-border-dark">
-            {[
-              { icon: "download", label: "Export Report" },
-              { icon: "share", label: "Share Dashboard" },
-              { icon: "history", label: "View History" },
-            ].map((btn) => (
-              <button
-                key={btn.label}
-                className="flex items-center gap-2 text-xs hover:text-text-primary transition-colors"
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
-                  {btn.icon}
-                </span>
-                {btn.label}
-              </button>
-            ))}
+            <button
+              onClick={() => {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result, null, 2));
+                const a = document.createElement('a');
+                a.setAttribute("href", dataStr);
+                a.setAttribute("download", "runway-impact-report.json");
+                a.click();
+              }}
+              className="flex items-center gap-2 text-xs hover:text-text-primary transition-colors"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>download</span>
+              Export Report
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Share link copied to clipboard!");
+              }}
+              className="flex items-center gap-2 text-xs hover:text-text-primary transition-colors"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>share</span>
+              Share Dashboard
+            </button>
+            <button
+              onClick={() => alert("Runway impact history will be available in v2!")}
+              className="flex items-center gap-2 text-xs hover:text-text-primary transition-colors"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>history</span>
+              View History
+            </button>
           </div>
         </div>
       )}
