@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
+import { apiCall } from '../utils/api';
 
 export default function BlastRadius() {
   const [deprecation, setDeprecation] = useState("Firebase Auth v8 deprecation announced for end of Q4.");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  const analyze = () => {
+  const analyze = async () => {
     setLoading(true);
     setResult(null);
-    setTimeout(() => {
+    
+    try {
+      const res = await apiCall('/features/blast-radius', { deprecation }, 'POST');
+      if (res.success && res.data) {
+        setResult(res.data);
+      } else {
+        throw new Error("Invalid response");
+      }
+    } catch (err) {
+      console.error(err);
       setResult({
-        impactLevel: "High",
-        affectedFiles: ["/src/middleware/auth.js", "/src/pages/Login.jsx", "/src/pages/Signup.jsx", "/backend/auth_handler.py"],
-        explanation: "Firebase Auth v8 uses a singleton pattern that was completely rewritten in v9 (modular approach). This will break all current authentication flows and API token verification.",
-        estimatedTime: "4 hours"
+        impactLevel: "Unknown",
+        affectedFiles: [],
+        explanation: "Backend connection failed. Ensure backend is deployed and reachable.",
+        estimatedTime: "N/A"
       });
+    } finally {
       setLoading(false);
-    }, 2500);
+    }
   };
 
   return (

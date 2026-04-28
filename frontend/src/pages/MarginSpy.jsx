@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
+import { apiCall } from '../utils/api';
 
 export default function MarginSpy() {
   const [competitor, setCompetitor] = useState("AcmeCorp AI");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  const analyzeCompetitor = () => {
+  const analyzeCompetitor = async () => {
     setLoading(true);
     setResult(null);
     
-    // Simulate AI inference for the demo
-    setTimeout(() => {
+    try {
+      const res = await apiCall('/features/margin-spy', { competitor }, 'POST');
+      if (res.success && res.data) {
+        setResult(res.data);
+      } else {
+        throw new Error("Invalid response");
+      }
+    } catch (err) {
+      console.error(err);
       setResult({
-        inferredStack: "OpenAI GPT-4o, AWS EC2, Vercel Enterprise",
+        inferredStack: "Error communicating with AI.",
         userStack: "Gemini 2.5 Flash, Cloud Run, Firebase",
-        insight: "AcmeCorp AI is likely using OpenAI GPT-4o for their agents. By using Gemini 2.5 Flash, you are operating at an 80% lower inference cost. You can afford to undercut their pricing by 20% and still maintain higher margins.",
-        advantage: "Pricing Power",
-        marginDelta: "+80%"
+        insight: "Backend connection failed. Displaying simulated fallback.",
+        advantage: "Unknown",
+        marginDelta: "N/A"
       });
+    } finally {
       setLoading(false);
-    }, 3000);
+    }
   };
 
   return (

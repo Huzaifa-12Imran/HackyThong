@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
+import { apiCall } from '../utils/api';
 
 export default function PaulTranslation() {
   const [techInput, setTechInput] = useState("Migrating primary vector search from Pinecone to pgvector on existing Supabase instance. Refactoring standard LLM calls from GPT-4o to Gemini 2.5 Flash for non-reasoning tasks.");
   const [loading, setLoading] = useState(false);
   const [translation, setTranslation] = useState(null);
 
-  const translate = () => {
+  const translate = async () => {
     setLoading(true);
     setTranslation(null);
-    setTimeout(() => {
+    
+    try {
+      const res = await apiCall('/features/paul-translation', { tech_update: techInput }, 'POST');
+      if (res.success && res.data) {
+        setTranslation(res.data);
+      } else {
+        throw new Error("Invalid response");
+      }
+    } catch (err) {
+      console.error(err);
       setTranslation({
-        summary: "Technical Update: Sam is migrating our database structure and switching AI models.",
-        impact: "Product ships might be delayed by 1 day, but our unit economics will improve by 30%, giving us significantly better margins for the upcoming YC application and reducing our monthly burn by $850.",
-        risk: "Low. Users will not experience any downtime."
+        summary: "Backend connection failed.",
+        impact: "Unable to generate translation. Ensure backend is deployed and reachable.",
+        risk: "Unknown"
       });
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiCall } from '../utils/api';
 
 export default function RealityCheck() {
   const [promise, setPromise] = useState("We are launching the AI agent feature by Friday, fully integrated with Stripe for billing, as promised to our seed investors.");
@@ -6,28 +7,29 @@ export default function RealityCheck() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
 
-  const analyzeGap = () => {
+  const analyzeGap = async () => {
     setLoading(true);
     setResults(null);
     
-    // Simulate AI processing time for the demo
-    setTimeout(() => {
-      setResults([
-        {
-          id: 1,
-          severity: "Critical",
-          mismatch: "Investor update promises Stripe billing integration by Friday, but internal Notion notes show it is currently blocked by compliance review.",
-          fix: "Send immediate proactive update to investors citing compliance delay, or cut Stripe requirement for Friday's launch and use free-tier for initial beta users."
-        },
-        {
-          id: 2,
-          severity: "High",
-          mismatch: "External commitment guarantees AI agent feature launch by Friday. Internal Slack and Jira show the API is broken (500 errors) and the team expects to push to next week.",
-          fix: "Align co-founders: either approve overtime to fix API, or draft communication to push launch date to Wednesday next week to preserve trust."
-        }
-      ]);
+    try {
+      const res = await apiCall('/features/reality-check', { promise, reality }, 'POST');
+      if (res.success && res.data && res.data.results) {
+        setResults(res.data.results);
+      } else {
+        throw new Error("Invalid response");
+      }
+    } catch (err) {
+      console.error(err);
+      // Fallback in case of failure so demo doesn't crash completely
+      setResults([{
+        id: "err",
+        severity: "Medium",
+        mismatch: "Backend connection failed. Displaying simulated fallback.",
+        fix: "Check your Cloud Run deployment or OpenRouter API key."
+      }]);
+    } finally {
       setLoading(false);
-    }, 2500);
+    }
   };
 
   return (

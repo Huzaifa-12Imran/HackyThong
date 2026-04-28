@@ -378,3 +378,126 @@ def get_chat_response(stack_profile: dict, question: str) -> dict:
     except Exception as e:
         print(f"Gemini chat failed: {e}")
         return fallback
+
+# ── New Strategic Features ────────────────────────────────────────────────
+
+def analyze_reality_gap(promise: str, reality: str) -> dict:
+    """Compare external promise vs internal reality to detect conflicts."""
+    prompt = f"""
+    You are an alignment AI for startup co-founders.
+    External Promise (What was communicated to investors/customers):
+    {promise}
+    
+    Internal Reality (Jira/Slack/Notion current state):
+    {reality}
+    
+    Identify conflicts between the promise and reality.
+    Return ONLY JSON:
+    {{
+      "results": [
+        {{
+          "id": "unique_string",
+          "severity": "Critical|High|Medium",
+          "mismatch": "exact conflict description",
+          "fix": "recommended immediate action"
+        }}
+      ]
+    }}
+    """
+    fallback = {
+      "results": [
+        {{
+          "id": "fallback-1",
+          "severity": "High",
+          "mismatch": "AI analysis temporarily unavailable. Please review manually.",
+          "fix": "Check back shortly."
+        }}
+      ]
+    }
+    try:
+        return parse_or_fallback(_chat(prompt, max_tokens=1024), fallback)
+    except Exception as e:
+        print(f"Reality check failed: {e}")
+        return fallback
+
+def translate_to_paul(tech_update: str) -> dict:
+    """Translate technical updates to business/financial impact."""
+    prompt = f"""
+    You are a 'Technical-to-Business' translation AI.
+    The technical co-founder (Sam) just completed this work:
+    {tech_update}
+    
+    Translate this into a business update for the non-technical co-founder (Paul).
+    Focus on financial impact, risk, and product timeline.
+    Return ONLY JSON:
+    {{
+      "summary": "1 sentence technical summary",
+      "impact": "Detailed business, financial, and timeline impact",
+      "risk": "Assessment of execution/downtime risk"
+    }}
+    """
+    fallback = {
+        "summary": "Technical update received.",
+        "impact": "AI analysis unavailable.",
+        "risk": "Unknown"
+    }
+    try:
+        return parse_or_fallback(_chat(prompt, max_tokens=1024), fallback)
+    except Exception as e:
+        return fallback
+
+def infer_competitor_margin(competitor: str, user_stack: str) -> dict:
+    """Infer competitor stack and calculate margin advantage."""
+    prompt = f"""
+    You are a competitive intelligence AI.
+    Competitor Name: {competitor}
+    Your Stack: {user_stack}
+    
+    Infer what tech stack {competitor} is likely using (be highly specific, guess if necessary).
+    Compare it to 'Your Stack' and deduce a margin/cost advantage.
+    Return ONLY JSON:
+    {{
+      "inferredStack": "e.g., OpenAI GPT-4, AWS, Vercel",
+      "userStack": "{user_stack}",
+      "insight": "Detailed strategic insight on why your stack is cheaper/better",
+      "advantage": "e.g., Pricing Power, Iteration Speed",
+      "marginDelta": "e.g., +80%, 10x Cheaper"
+    }}
+    """
+    fallback = {
+        "inferredStack": "Unknown",
+        "userStack": user_stack,
+        "insight": "AI intelligence unavailable.",
+        "advantage": "Unknown",
+        "marginDelta": "N/A"
+    }
+    try:
+        return parse_or_fallback(_chat(prompt, max_tokens=1024), fallback)
+    except Exception as e:
+        return fallback
+
+def calculate_blast_radius(deprecation: str) -> dict:
+    """Predict blast radius of an ecosystem deprecation."""
+    prompt = f"""
+    You are a Senior Staff Engineer AI.
+    A dependency deprecation was announced: {deprecation}
+    
+    Estimate the 'Blast Radius' for a typical modern React/Node/Python stack.
+    Return ONLY JSON:
+    {{
+      "impactLevel": "Critical|High|Medium|Low",
+      "affectedFiles": ["/src/example.js", "/backend/example.py"],
+      "explanation": "Why this breaks things",
+      "estimatedTime": "e.g., 4 hours, 2 days"
+    }}
+    """
+    fallback = {
+        "impactLevel": "Unknown",
+        "affectedFiles": [],
+        "explanation": "AI estimation unavailable.",
+        "estimatedTime": "Unknown"
+    }
+    try:
+        return parse_or_fallback(_chat(prompt, max_tokens=1024), fallback)
+    except Exception as e:
+        return fallback
