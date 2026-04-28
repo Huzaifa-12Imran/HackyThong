@@ -9,6 +9,9 @@ import FixPanel from "./pages/FixPanel";
 import Settings from "./pages/Settings";
 import RealityCheck from "./pages/RealityCheck";
 import MarginSpy from "./pages/MarginSpy";
+import FounderSync from "./pages/FounderSync";
+import PaulTranslation from "./pages/PaulTranslation";
+import BlastRadius from "./pages/BlastRadius";
 import { TERMINAL_LINES } from "./data/demoData";
 
 export default function App() {
@@ -31,6 +34,9 @@ export default function App() {
     terminal: "Live Pulse",
     reality: "Reality Check Engine",
     margin: "Margin Spy",
+    sync: "Founder Sync",
+    paul: "Paul Translation",
+    blast: "Blast Radius",
     settings: "Settings",
   };
 
@@ -54,6 +60,9 @@ export default function App() {
           {page === "terminal" && <LiveTerminalPage />}
           {page === "reality" && <RealityCheck />}
           {page === "margin" && <MarginSpy />}
+          {page === "sync" && <FounderSync />}
+          {page === "paul" && <PaulTranslation />}
+          {page === "blast" && <BlastRadius />}
           {page === "settings" && <Settings />}
         </main>
       </div>

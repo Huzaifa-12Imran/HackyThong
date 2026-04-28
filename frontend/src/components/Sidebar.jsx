@@ -7,6 +7,9 @@ const navItems = [
   { icon: "analytics", label: "Impact Analyzer", page: "analyzer" },
   { icon: "policy", label: "Reality Check", page: "reality" },
   { icon: "search", label: "Margin Spy", page: "margin" },
+  { icon: "sync_alt", label: "Founder Sync", page: "sync" },
+  { icon: "translate", label: "Paul Translation", page: "paul" },
+  { icon: "explosion", label: "Blast Radius", page: "blast" },
   { icon: "monitoring", label: "Live Pulse", page: "terminal" },
   { icon: "settings", label: "Settings", page: "settings" },
 ];
