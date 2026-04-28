@@ -406,12 +406,12 @@ def analyze_reality_gap(promise: str, reality: str) -> dict:
     """
     fallback = {
       "results": [
-        {{
+        {
           "id": "fallback-1",
           "severity": "High",
           "mismatch": "AI analysis temporarily unavailable. Please review manually.",
           "fix": "Check back shortly."
-        }}
+        }
       ]
     }
     try:
